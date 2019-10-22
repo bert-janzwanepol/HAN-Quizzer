@@ -1,0 +1,26 @@
+1 Requirements
+2 Wireframes
+3 Resources (begin REST design)
+4 Systeemreacties
+	- User events
+	- Server events
+
+5 Communicatie Protocollen
+	- websocket -> update string
+	- REST endpoints
+
+6 Data Schema
+Handigste is een mongoose schema, hoeft niet te uitgebreid/te specifiek/gevalideerd
+	- Mongoose schema
+		- velden
+		- datatype
+	- Embedding vs Linking
+7 Client side state
+	- Redux
+		- welke reducers
+		- hoe ziet de state er uit
+	- Of local state
+
+8 Server structuur
+	- subroutes
+	- middleware - bijvoorbeeld voor authenticatie
