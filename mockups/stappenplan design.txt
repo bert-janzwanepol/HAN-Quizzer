@@ -1,6 +1,15 @@
 1 Requirements
 2 Wireframes
 3 Resources (begin REST design)
+		 	IN DATABASE
+	- Game 		yes / POST, GET
+	- Round 	yes / POST, PUT, GET
+	- Question	yes / GET
+	- Team		yes / POST, PUT, GET
+	- Applicants	no  / POST, GET
+	- Anwser	yes / POST, PUT, GET
+	- Quizmaster	no  / GET
+	- Categorie	no  / GET
 4 Systeemreacties
 	- User events
 	- Server events
@@ -15,6 +24,7 @@ Handigste is een mongoose schema, hoeft niet te uitgebreid/te specifiek/gevalide
 		- velden
 		- datatype
 	- Embedding vs Linking
+
 7 Client side state
 	- Redux
 		- welke reducers
