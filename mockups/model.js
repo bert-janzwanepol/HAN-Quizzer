@@ -12,7 +12,7 @@ let teamSchema = new mongoose.Schema({
 })
 
 let roundQuestionSchema = new mongoose.Schema({
-    question: [{
+    askedQuestion: [{
         _id: String, // Link naar questionSchema
         answers: [answerSchema],
         closed: Boolean

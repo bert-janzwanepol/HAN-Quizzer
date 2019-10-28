@@ -1,23 +1,24 @@
 // NPM modules
-var express = require('express')
-var http = require('http')
-var path = require('path')
-var logger = require('morgan')
-var cookieParser = require('cookie-parser')
+const express = require('express')
+const http = require('http')
+const path = require('path')
+const logger = require('morgan')
+const cookieParser = require('cookie-parser')
+const mongoose = require('mongoose')
 
 // Self-build modules
-var wssFactory = require('./socketserver')
-var indexRouter = require('./routes')
-var gamesRouter = require('./routes/games')
-var questionsRouter = require('./routes/questions')
-var categoriesRouter = require('./routes/categories')
-var quizmastersRouter = require('./routes/quizmasters')
+const wssFactory = require('./socketserver')
+const indexRouter = require('./routes')
+const gamesRouter = require('./routes/games')
+const questionsRouter = require('./routes/questions')
+const categoriesRouter = require('./routes/categories')
+const quizmastersRouter = require('./routes/quizmasters')
 
 // Http server definition
-var server = http.createServer()
+const server = http.createServer()
 
 // Express setup
-var app = express()
+const app = express()
 
 app.use(logger(':method | \':url\' | :status | :res[content-length] - :response-time ms'))
 app.use(express.json())
@@ -43,7 +44,11 @@ server.on('upgrade', (req, socket, head) => {
     socket.id = 1
 })
 
-server.listen(3000,
-    function () {
-        console.log("The Server is lisening on port 3000.")
+// Mongoose settings
+const dbName = 'quizzer'
+
+server.listen(3000, () => {
+    mongoose.connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+        console.log(`game server started on port ${server.address().port}`);
     });
+});
