@@ -8,11 +8,15 @@ const mongoose = require('mongoose')
 
 // Self-build modules
 const wssFactory = require('./socketserver')
+
 const indexRouter = require('./routes')
 const gamesRouter = require('./routes/games')
 const questionsRouter = require('./routes/questions')
 const categoriesRouter = require('./routes/categories')
 const quizmastersRouter = require('./routes/quizmasters')
+
+const errorHandler = require('./middleware/errorHandler')
+const authentication = require('./middleware/authentication')
 
 // Http server definition
 const server = http.createServer()
@@ -24,7 +28,8 @@ app.use(logger(':method | \':url\' | :status | :res[content-length] - :response-
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use(authentication.authentication())
+app.use(errorHandler.errorHandler())
 
 // Routes
 app.use('/', indexRouter)
@@ -32,6 +37,8 @@ app.use('/games', gamesRouter)
 app.use('/questions', questionsRouter)
 app.use('/categories', categoriesRouter)
 app.use('/quizmaster', quizmastersRouter)
+
+app.use('/static', express.static(path.join(__dirname, 'public')))
 
 
 // WSS setup
