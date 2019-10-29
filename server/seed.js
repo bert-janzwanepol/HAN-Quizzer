@@ -4,6 +4,7 @@
  */
 const mongoose = require('mongoose')
 const fs = require('fs')
+
 require('./model/answer')
 require('./model/askedQuestion')
 require('./model/game')
@@ -11,6 +12,10 @@ require('./model/question')
 require('./model/quizmaster')
 require('./model/round')
 require('./model/team')
+
+// Environment variables
+const dotenv = require('dotenv')
+dotenv.config();
 
 // Models
 const Game = mongoose.model('Game')
@@ -21,7 +26,7 @@ const dbName = 'quizzer'
 
 const db = mongoose.connection
 
-mongoose.connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
     return deleteGames()
 }).then(() => {
     return seedQuizmaster()

@@ -5,6 +5,8 @@ const path = require('path')
 const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
+const dotenv = require('dotenv')
+dotenv.config();
 
 // Self-build modules
 const wssFactory = require('./socketserver')
@@ -55,7 +57,7 @@ server.on('upgrade', (req, socket, head) => {
 const dbName = 'quizzer'
 
 server.listen(3000, () => {
-    mongoose.connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+    mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
         console.log(`game server started on port ${server.address().port}`);
     });
 });

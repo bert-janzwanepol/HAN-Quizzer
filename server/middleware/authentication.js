@@ -11,7 +11,7 @@ exports.authentication = () => {
         } else {
             try {
                 const token = req.get('token')
-                req.user = jwt.verify(token, 'bertjanenhendrikzijnfuckingcool10024')
+                req.user = jwt.verify(token, process.env.JWT_SECRET)
                 next()
             } catch (err) {
                 err.code = 'JWTERROR'
