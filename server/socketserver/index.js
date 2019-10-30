@@ -42,6 +42,16 @@ exports.createServer = (httpServer) => {
         }
     }
 
+    wss.sendToTeam = (message, gamepassword, teamname) => {
+        const game = games.find(g => g.password === gamepassword)
+        if (game) {
+            const team = game.teams.find(t => t.name === teamname)
+            if (team) {
+                team.sendJSON(message)
+            }
+        }
+    }
+
     return wss
 }
 
