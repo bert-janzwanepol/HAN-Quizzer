@@ -1,11 +1,11 @@
 require('../model/game')
-const express = require('express');
+const express = require('express')
 const mongoose = require('mongoose')
 
 const teamsRouter = require('./teams')
 const roundsRouter = require('./rounds')
 
-const router = express.Router();
+const router = express.Router()
 const Game = mongoose.model('Game')
 
 router.use('/:password', async (req, res, next) => {
