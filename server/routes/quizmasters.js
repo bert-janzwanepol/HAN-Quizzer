@@ -7,11 +7,12 @@ const mongoose = require('mongoose')
 const router = express.Router();
 const Quizmaster = mongoose.model('Quizmaster')
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
     const qm = await Quizmaster.findOne({ name: req.body.name }).exec()
 
     if (!qm) {
-        next('NOQMFOUND')
+        err = { code: 'NOQMFOUND' }
+        next(err)
     }
 
     const token = jwt.sign({

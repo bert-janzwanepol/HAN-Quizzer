@@ -30,32 +30,32 @@ app.use(logger(':method | \':url\' | :status | :res[content-length] - :response-
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(authentication.authentication())
+app.use(authentication.authentication().unless({
+    path: [
+        '/quizmaster/login',
+        { url: /\/games\/[a-z]{5}\/teams/, methods: ['POST'] }
+    ]
+}))
 app.use(errorHandler.errorHandler())
 
 // Routes
-app.use('/', indexRouter)
 app.use('/games', gamesRouter)
 app.use('/questions', questionsRouter)
 app.use('/categories', categoriesRouter)
 app.use('/quizmaster', quizmastersRouter)
+app.use('/', indexRouter)
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
 
 
 // WSS setup
-wssFactory.createServer(server)
-//server.on('upgrade', () => :TODO zorg ervoor dat de server weet wat voorn socket het is)
+const wss = wssFactory.createServer(server)
+app.set('wss', wss)
 
 // Http settings
 server.on('request', app);
-server.on('upgrade', (req, socket, head) => {
-    socket.id = 1
-})
 
 // Mongoose settings
-const dbName = 'quizzer'
-
 server.listen(3000, () => {
     mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
         console.log(`game server started on port ${server.address().port}`);

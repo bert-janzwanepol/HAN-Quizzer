@@ -10,9 +10,18 @@ const gameSchema = new mongoose.Schema({
     password: { type: String, required: true }
 })
 
-gameSchema.methods.createNewGame = async function createNewGame(next) {
+gameSchema.methods.createNewGame = async function createNewGame() {
     await this.model('Game').deleteMany({ quizmaster: this.quizmaster })
-    await this.save(err => err ? next(err) : true)
+    await this.save()
+}
+
+gameSchema.methods.addTeam = async function addTeam(teamname) {
+    this.teams.push({
+        name: teamname,
+        approved: false,
+        score: 0
+    })
+    await this.save()
 }
 
 const Game = mongoose.model('Game', gameSchema)

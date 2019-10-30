@@ -1,8 +1,7 @@
 exports.errorHandler = () => {
     return (err, req, res, next) => {
-        console.log(err.code)
         switch (err.code) {
-            case 'JWTERROR':
+            case 'JWTERROR' || 'NOQMFOUND':
                 res.status(401).json({ error: "Something went wrong with authentication" })
                 break;
             default:

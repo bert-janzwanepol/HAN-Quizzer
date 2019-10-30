@@ -4,14 +4,18 @@ const mongoose = require('mongoose')
 
 const teamsRouter = require('./teams')
 const roundsRouter = require('./rounds')
-const applicantsRouter = require('./applicants')
 
 const router = express.Router();
 const Game = mongoose.model('Game')
 
-router.use('/teams', teamsRouter)
-router.use('/rounds', roundsRouter)
-router.use('/applicants', applicantsRouter)
+router.use('/:password', async (req, res, next) => {
+    const game = await Game.findOne({ password: req.params.password }).exec()
+    req.game = game
+    next()
+})
+
+router.use('/:password/teams', teamsRouter)
+router.use('/:password/rounds', roundsRouter)
 
 router.post('/', (req, res, next) => {
     const gamebody = {
@@ -23,7 +27,7 @@ router.post('/', (req, res, next) => {
     }
 
     const game = new Game(gamebody)
-    game.createNewGame(next)
+    game.createNewGame()
 
     res.json(gamebody)
 })
