@@ -74,7 +74,13 @@ async function mockGame() {
     await Game.create({
         quizmaster: 'Bert-Jan',
         rounds: [],
-        teams: [],
+        teams: [
+            {
+                name: 'my team',
+                approved: false,
+                score: 0
+            }
+        ],
         password: 'abcde'
     });
 }
