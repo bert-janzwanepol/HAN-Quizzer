@@ -84,6 +84,8 @@ export const submitTeam = (name, roomkey, event) => {
             .then(json => {
                 if (json.error) dispatch(rejectTeamAction(json.error))
                 if (json.token) dispatch(acceptTeamAction(json.token))
+
+                dispatch(setWaitStatusAction(false));
             })
     }
 }
