@@ -78,7 +78,10 @@ export const submitTeam = (name, roomkey, event) => {
 
         // fetch the game by roomkey
         return fetch('http://localhost:3000/games/' + roomkey + '/teams', {
-            method: 'POST'
+            method: 'POST',
+            body: {
+                teamname: name
+            }
         })
             .then(res => res.json())
             .then(json => {
