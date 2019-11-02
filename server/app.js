@@ -2,6 +2,7 @@
 const express = require('express')
 const http = require('http')
 const path = require('path')
+const cors = require('cors')
 const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
@@ -30,6 +31,11 @@ app.use(logger(':method | \':url\' | :status | :res[content-length] - :response-
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
+
+// added to make request from different origin (port) work
+app.use(cors({ origin: true, credentials: true }));
+app.options("*", cors({ origin: true, credentials: true }));
+
 app.use(authentication.authentication().unless({
     path: [
         '/quizmaster/login',
