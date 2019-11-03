@@ -5,7 +5,6 @@ const roundSchema = require('./round')
 const gameSchema = new mongoose.Schema({
     quizmaster: { type: String, required: true },
     rounds: { type: [roundSchema], required: true },
-    //gameName: { type: String, required: true },
     teams: { type: [teamSchema], required: true },
     password: { type: String, required: true }
 })
@@ -22,6 +21,16 @@ gameSchema.methods.addTeam = async function addTeam(teamname) {
         score: 0
     })
     await this.save()
+}
+
+gameSchema.methods.start = async function start() {
+    this.teams = this.teams.filter(t => t.approved)
+    this.rounds.push({
+        number: this.rounds.length + 1,
+        maxQuestions: 12,
+        questions: []
+    })
+    this.save()
 }
 
 const Game = mongoose.model('Game', gameSchema)

@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
-const answerSchema = require('./answer')
+const askedQuestionSchema = require('./askedQuestion')
 
 const roundSchema = new mongoose.Schema({
-    questionId: { type: Number, required: true },
-    answers: { type: [answerSchema], required: true },
-    closed: { type: Boolean, required: true }
+    number: { type: Number, required: true },
+    categories: { type: [String], required: true },
+    maxQuestions: { type: Number, required: true },
+    questions: { type: [askedQuestionSchema], required: true }
 })
 
-const AskedQuestion = mongoose.model('Round', roundSchema)
+const Round = mongoose.model('Round', roundSchema)
 exports = roundSchema

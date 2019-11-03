@@ -39,7 +39,9 @@ app.options("*", cors({ origin: true, credentials: true }));
 app.use(authentication.authentication().unless({
     path: [
         '/quizmaster/login',
-        { url: /\/games\/[a-z]{5}\/teams/, methods: ['POST'] }
+        { url: /\/games\/[a-z]{5}\/teams/, methods: ['POST'] },
+        { url: /\/static\/*/ },
+        { url: /\/teamapp\/*/ },
     ]
 }))
 app.use(errorHandler.errorHandler())
@@ -52,6 +54,7 @@ app.use('/quizmaster', quizmastersRouter)
 app.use('/', indexRouter)
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('/teamapp', express.static(path.join(__dirname, 'public/apps/team-app')))
 
 
 // WSS setup
