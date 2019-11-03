@@ -21,7 +21,6 @@ router.post('/', (req, res, next) => {
     const gamebody = {
         quizmaster: req.user.name,
         rounds: [],
-        // gameName: req.body.gamename,
         teams: [],
         password: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5)
     }
@@ -32,7 +31,7 @@ router.post('/', (req, res, next) => {
     res.json(gamebody)
 })
 
-router.post('/:password/start', (req, res) => {
+router.put('/:password/start', (req, res) => {
     const game = req.game
 
     game.start()
