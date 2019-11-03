@@ -7,14 +7,19 @@ const Game = mongoose.model('Game')
 
 router.post('/', (req, res) => {
     const game = req.game
-    const token = jwt.sign({
-        role: 'team',
-        name: req.body.teamname,
-    }, process.env.JWT_SECRET)
 
-    game.addTeam(req.body.teamname)
-    res.json({ token: token })
-    req.app.get('wss').broadcast({ type: 'TEAMCHAGE' }, game.password, 'quizmaster')
+    if (game.rounds.length) {
+        res.status(409).send()
+    } else {
+        const token = jwt.sign({
+            role: 'team',
+            name: req.body.name,
+        }, process.env.JWT_SECRET)
+
+        game.addTeam(req.body.name)
+        res.json({ token: token })
+        req.app.get('wss').broadcast({ type: 'TEAMCHAGE' }, game.password, 'quizmaster')
+    }
 })
 
 router.get('/', (req, res) => {

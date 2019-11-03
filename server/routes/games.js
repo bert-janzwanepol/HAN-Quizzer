@@ -32,5 +32,13 @@ router.post('/', (req, res, next) => {
     res.json(gamebody)
 })
 
+router.post('/:password/start', (req, res) => {
+    const game = req.game
+
+    game.start()
+    req.app.get('wss').broadcast({ type: 'STARTGAME' }, game.password, 'quizmaster', 'teams')
+    res.status(200).send()
+})
+
 
 module.exports = router;
