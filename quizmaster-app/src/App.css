@@ -133,7 +133,7 @@ button {
 }
 
 .dashboard {
-  background-color: #fff;
+background-color: #fff;
   border: 1px solid #1d1d1d;
   padding: 1rem;
   display: flex;
@@ -146,6 +146,19 @@ button {
 
 .dashboard li {
   display: flex;
+  margin-top: 0.25rem;
+}
+
+.dashboard li:hover {
+  background-color: #f2f2f2;
+}
+
+.accept {
+  background-color: green;
+}
+
+.reject {
+  background-color: red;
 }
 
 .dashboard li span {

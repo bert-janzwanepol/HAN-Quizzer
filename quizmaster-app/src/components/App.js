@@ -21,7 +21,7 @@ function App() {
                             <SignupForm {...routeProps} />
                         </div>
                     }} />
-                    <Route exact path="/game" component={GameDashboard} />
+                    <Route path="/game" component={GameDashboard} />
                 </Switch>
             </div>
         </Router>

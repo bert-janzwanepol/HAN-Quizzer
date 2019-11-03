@@ -18,15 +18,15 @@ class TeamListUI extends Component {
                     <span>{team.name}</span>
 
                     {/* accept button */}
-                    <button className="icon-button" onClick={() => this.props.setTeamStatus(team.name, true)}>
+                    <button className="icon-button accept" onClick={() => this.props.setTeamStatus(team.name, true)}>
                         <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check">
                             <polyline fill="none" stroke="#000" strokeWidth="1.1" points="4,10 8,15 17,4"></polyline>
                         </svg>
                     </button>
 
                     {/* reject button */}
-                    <button className="icon-button" onClick={() => this.props.setTeamStatus(team.name, false)}>
-                        <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="close"><path fill="none" stroke="#000" stroke-width="1.06" d="M16,16 L4,4">
+                    <button className="icon-button reject" onClick={() => this.props.setTeamStatus(team.name, false)}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="close"><path fill="none" stroke="#000" strokeWidth="1.06" d="M16,16 L4,4">
                         </path><path fill="none" stroke="#000" strokeWidth="1.06" d="M16,4 L4,16"></path>
                         </svg>
                     </button>

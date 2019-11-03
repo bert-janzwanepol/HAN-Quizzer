@@ -93,6 +93,17 @@ export const submitTeam = (name, roomkey, event) => {
                 if (json.error) dispatch(rejectTeamAction(json.error))
                 if (json.token) dispatch(acceptTeamAction(json.token))
 
+                let socket = new WebSocket('ws://localhost:3000');
+                socket.onopen = () => {
+                    let initMessage = {
+                        initial: true,
+                        password: roomkey,
+                        token: json.token
+                    }
+
+                    socket.send(JSON.stringify(initMessage))
+                }
+
                 dispatch(setWaitStatusAction(false));
             })
     }

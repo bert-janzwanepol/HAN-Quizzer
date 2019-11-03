@@ -4,5 +4,5 @@ import { gameReducer } from './game';
 
 export default Redux.combineReducers({
     authentication: authenticationReducer,
-    game: gameReducer
+    game: gameReducer,
 })
