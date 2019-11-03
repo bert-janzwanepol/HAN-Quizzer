@@ -1,22 +1,142 @@
-.App {
-  text-align: center;
+#root {
+    display: flex;
 }
 
-.App-logo {
-  height: 40vmin;
+html {
+    color: #1d1d1d;
+    font-family: 'Roboto Slab', serif;
+    font-size: 16px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app {
+  background-color: green;
+    display: flex;
+    height: 50vw;
+    padding: 0.75rem;
+    width: 75vw;
+    box-sizing: border-box;
+}
+
+.dashboard {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 100%;
 }
 
-.App-link {
-  color: #09d3ac;
+.createButton {
+  margin: 0 auto;
 }
+
+header {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    width: 22em;
+}
+
+input, button {
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    padding: 0.2rem;
+}
+
+button {
+    align-self: center;
+    border: none;
+    border-radius: 50px;
+    background-color: rgb(1, 144, 245);
+    color: #fff;
+    width: 16rem;
+}
+
+.form-error-message {
+    color: red;
+}
+
+.login {
+  align-self: center;
+  margin: 0 auto;
+}
+
+.logo-symbol {
+    font-size: 10rem;
+    font-weight: 700;
+}
+
+/* LOADING INDICATOR FROM loading.io */
+.lds-ripple {
+    align-self: center;
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+  }
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #fff;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 28px;
+    left: 28px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: -1px;
+    left: -1px;
+    width: 58px;
+    height: 58px;
+    opacity: 0;
+  }
+}
+
+.answer-right svg, .answer-wrong svg {
+  width: 20em;
+  height: 20em;
+}
+
+.answer-right, .answer-wrong {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.answer-right {
+  background-color: #00AF54;
+}
+
+.answer-wrong {
+  background-color: #CC380C;
+}
+
+  /* HELPER */
+
+  .center {
+    text-align: center;
+  }
+
+
+  /* quizzmaster app */
+
+  .team-lists {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-around;
+  }
+  
+  .dashboard > div {
+    flex-grow: 1;
+  }
