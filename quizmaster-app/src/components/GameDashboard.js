@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 import TeamList from './TeamList'
 
-import { toggleTeamStatusAction } from '../reducers/application'
 import { createGame } from '../reducers/game'
+// import { initWS } from '../reducers/socket'
 
 class GameDashboardUI extends Component {
+
     render() {
         return (
             <div className="dashboard">
@@ -26,16 +27,16 @@ class GameDashboardUI extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        gamekey: state.application.gamekey,
-        teams: state.application.teams,
-        game: state.game.game
+        teams: state.game.teams,
+        game: state.game.game,
+        socket: state.socket
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createGame: () => dispatch(createGame()),
-        toggleTeamStatus: teamName => dispatch(toggleTeamStatusAction(teamName)),
+        createGame: () => { dispatch(createGame()); },
+        // wsConnect: () => dispatch()
     }
 }
 
