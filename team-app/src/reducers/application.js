@@ -63,6 +63,7 @@ export const setRoomPasswordAction = (password) => {
 
 export const submitTeam = (name, roomkey, event) => {
     event.preventDefault(); // don't reload the page
+    console.log(name);
 
     return (dispatch) => {
         // check if name and roomkey are valid
@@ -79,9 +80,13 @@ export const submitTeam = (name, roomkey, event) => {
         // fetch the game by roomkey
         return fetch('http://localhost:3000/games/' + roomkey + '/teams', {
             method: 'POST',
-            body: {
-                teamname: name
-            }
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name
+            })
         })
             .then(res => res.json())
             .then(json => {

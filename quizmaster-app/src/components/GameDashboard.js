@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 import TeamList from './TeamList'
 
-import { toggleTeamStatusAction } from '../reducers/application'
 import { createGame } from '../reducers/game'
 
 class GameDashboardUI extends Component {
@@ -26,8 +25,7 @@ class GameDashboardUI extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        gamekey: state.application.gamekey,
-        teams: state.application.teams,
+        teams: state.game.teams,
         game: state.game.game
     }
 }
@@ -35,7 +33,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         createGame: () => dispatch(createGame()),
-        toggleTeamStatus: teamName => dispatch(toggleTeamStatusAction(teamName)),
     }
 }
 

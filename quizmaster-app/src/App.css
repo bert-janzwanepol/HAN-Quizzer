@@ -9,21 +9,11 @@ html {
 }
 
 .app {
-  background-color: green;
     display: flex;
     height: 50vw;
     padding: 0.75rem;
     width: 75vw;
     box-sizing: border-box;
-}
-
-.dashboard {
-  display: flex;
-  width: 100%;
-}
-
-.createButton {
-  margin: 0 auto;
 }
 
 header {
@@ -57,10 +47,7 @@ button {
     color: red;
 }
 
-.login {
-  align-self: center;
-  margin: 0 auto;
-}
+
 
 .logo-symbol {
     font-size: 10rem;
@@ -131,12 +118,58 @@ button {
 
   /* quizzmaster app */
 
-  .team-lists {
-    display: flex;
-    flex-grow: 1;
-    justify-content: space-around;
-  }
-  
-  .dashboard > div {
-    flex-grow: 1;
-  }
+.team-lists {
+  display: flex;
+  flex-grow: 1;
+}
+
+.team-lists ul {
+  padding: 0;
+  margin-right: 2em;
+}
+
+.team-lists > div {
+  flex-basis: 50%;
+}
+
+.dashboard {
+  background-color: #fff;
+  border: 1px solid #1d1d1d;
+  padding: 1rem;
+  display: flex;
+  width: 100%;
+}
+
+.dashboard > div {
+  flex-grow: 1;
+}
+
+.dashboard li {
+  display: flex;
+}
+
+.dashboard li span {
+  flex-grow: 1;
+}
+
+.icon-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 0;
+  margin-left: 0.25em;
+  margin-top: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.login {
+  align-self: center;
+  margin: 0 auto;
+}
+
+.createButton {
+  margin: 0 auto;
+}
