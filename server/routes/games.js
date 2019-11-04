@@ -36,7 +36,7 @@ router.put('/:password/start', (req, res) => {
 
     game.start()
     req.app.get('wss').broadcast({ type: 'STARTGAME' }, game.password, 'quizmaster', 'teams')
-    res.status(200).send()
+    res.sendStatus(200)
 })
 
 
