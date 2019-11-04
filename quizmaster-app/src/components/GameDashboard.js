@@ -28,8 +28,7 @@ class GameDashboardUI extends Component {
 const mapStateToProps = (state) => {
     return {
         teams: state.game.teams,
-        game: state.game.game,
-        socket: state.socket
+        game: state.game.game
     }
 }
 
