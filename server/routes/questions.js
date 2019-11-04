@@ -9,7 +9,10 @@ const AskedQuestion = mongoose.model('AskedQuestion')
 
 const answersRouter = require('./answers')
 
-router.get('/:questionNumber/answers', answersRouter)
+router.use('/:questionNumber/answers', (req, res, next) => {
+    req.questionNumber = req.params.questionNumber
+    next()
+}, answersRouter)
 
 router.get('/', async (req, res) => {
     const game = req.game
