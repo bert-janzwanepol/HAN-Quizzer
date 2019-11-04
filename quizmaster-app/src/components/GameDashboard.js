@@ -35,8 +35,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createGame: () => { dispatch(createGame()); },
-        // wsConnect: () => dispatch()
+        createGame: () => { dispatch(createGame()) }
     }
 }
 
