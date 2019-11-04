@@ -28,15 +28,13 @@ class GameDashboardUI extends Component {
 const mapStateToProps = (state) => {
     return {
         teams: state.game.teams,
-        game: state.game.game,
-        socket: state.socket
+        game: state.game.game
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createGame: () => { dispatch(createGame()); },
-        // wsConnect: () => dispatch()
+        createGame: () => { dispatch(createGame()) }
     }
 }
 

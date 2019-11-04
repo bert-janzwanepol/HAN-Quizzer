@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 
-import { fetchTeams, setTeamStatusAction } from '../reducers/game'
+import { setTeamStatus } from '../reducers/game'
 
 class TeamListUI extends Component {
 
@@ -18,14 +18,14 @@ class TeamListUI extends Component {
                     <span>{team.name}</span>
 
                     {/* accept button */}
-                    <button className="icon-button accept" onClick={() => this.props.setTeamStatus(team.name, true)}>
+                    <button className="icon-button accept" onClick={() => this.props.setTeamStatus(true, this.props.roomkey, team.name)}>
                         <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check">
                             <polyline fill="none" stroke="#000" strokeWidth="1.1" points="4,10 8,15 17,4"></polyline>
                         </svg>
                     </button>
 
                     {/* reject button */}
-                    <button className="icon-button reject" onClick={() => this.props.setTeamStatus(team.name, false)}>
+                    <button className="icon-button reject" onClick={() => this.props.setTeamStatus(false, this.props.roomkey, team.name)}>
                         <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="close"><path fill="none" stroke="#000" strokeWidth="1.06" d="M16,16 L4,4">
                         </path><path fill="none" stroke="#000" strokeWidth="1.06" d="M16,4 L4,16"></path>
                         </svg>
@@ -35,24 +35,20 @@ class TeamListUI extends Component {
         }
 
         return (
-            <>
-                <div className="team-lists">
-                    <div>
-                        <h2>Doen niet mee:</h2>
-                        <ul>
-                            {deniedList}
-                        </ul>
-                    </div>
-                    <div>
-                        <h2>Doen mee:</h2>
-                        <ul>
-                            {acceptedList}
-                        </ul>
-                    </div>
+            <div className="team-lists">
+                <div>
+                    <h2>Doen niet mee:</h2>
+                    <ul>
+                        {deniedList}
+                    </ul>
                 </div>
-                <button onClick={() => this.props.fetchTeams(this.props.roomkey)}>Fetch Teams</button>
-            </>
-
+                <div>
+                    <h2>Doen mee:</h2>
+                    <ul>
+                        {acceptedList}
+                    </ul>
+                </div>
+            </div>
         )
     }
 }
@@ -66,8 +62,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setTeamStatus: (teamname, approved) => dispatch(setTeamStatusAction(teamname, approved)),
-        fetchTeams: (roomkey) => dispatch(fetchTeams(roomkey))
+        setTeamStatus: (approved, roomkey, teamname) => dispatch(setTeamStatus(approved, roomkey, teamname))
     }
 }
 

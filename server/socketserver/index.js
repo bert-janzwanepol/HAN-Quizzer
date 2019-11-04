@@ -47,7 +47,7 @@ exports.createServer = (httpServer) => {
         if (game) {
             const team = game.teams.find(t => t.name === teamname)
             if (team) {
-                team.sendJSON(message)
+                sendJSON(message, team)
             }
         }
     }
