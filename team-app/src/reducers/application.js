@@ -1,5 +1,4 @@
 import produce from "immer";
-import * as Redux from 'redux';
 import { connect } from '@giantmachines/redux-websocket';
 
 const initialState = {
@@ -83,7 +82,7 @@ export const submitTeam = (name, roomkey, event) => {
         dispatch(rejectTeamAction("")); // reset error message to empty string
         dispatch(setWaitStatusAction(true)); // show loading icon
 
-        // fetch the game by roomkey
+        // post to the right room by using the roomkey
         return fetch('http://localhost:3000/games/' + roomkey + '/teams', {
             method: 'POST',
             headers: {
@@ -97,35 +96,20 @@ export const submitTeam = (name, roomkey, event) => {
             .then(res => res.json())
             .then(json => {
                 if (json.error) dispatch(rejectTeamAction(json.error))
+
                 if (json.token) {
+                    // set jwt
                     dispatch(acceptTeamAction(json.token));
-                    connect('ws://localhost:3000');
+
+                    // connect to websocketserver
+                    dispatch(connect('ws://localhost:3000'));
                 }
-
-
-
-                // let socket = new WebSocket('ws://localhost:3000');
-                // socket.onopen = () => {
-                //     let initMessage = {
-                //         initial: true,
-                //         password: roomkey,
-                //         token: json.token
-                //     }
-
-                //     socket.send(JSON.stringify(initMessage))
-                // }
-
-                // socket.onmessage = (msg) => {
-                //     console.log(msg)
-                // }
-
-                // dispatch(setWaitStatusAction(false));
             })
     }
 }
 
 // Signup reducer
-const applicationReducer = produce((draft = initialState, action) => {
+export const applicationReducer = produce((draft = initialState, action) => {
     switch (action.type) {
         case SEND_APPLICATION:
             action.event.preventDefault();
@@ -153,9 +137,4 @@ const applicationReducer = produce((draft = initialState, action) => {
         default:
             return draft
     }
-})
-
-
-export const mainReducer = Redux.combineReducers({
-    application: applicationReducer
 })

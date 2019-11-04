@@ -4,14 +4,17 @@ import thunk from 'redux-thunk';
 
 import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
-import { mainReducer } from './reducers/application';
+import mainReducer from './reducers';
 
 import App from './components/App';
 
 import reduxWebsocket from '@giantmachines/redux-websocket';
+import socketMiddleware from './middleware/socket'
 
+// send the first message on open to authenticate the websocket
 const websocketOptions = {
     onOpen: (socket) => {
+
         let initMessage = {
             initial: true,
             password: theStore.getState().application.roomkey,
@@ -21,19 +24,11 @@ const websocketOptions = {
         socket.send(JSON.stringify(initMessage))
     }
 }
-
 const reduxWebsocketMiddleware = reduxWebsocket(websocketOptions);
-
-// const logger = (store) => (next) => (action) => {
-//     console.log('ACTION:', action.type, action);
-//     let result = next(action);
-//     console.log('STATE AFTER ACTION:', action.type, store.getState());
-//     return result;
-// }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
 const theStore = Redux.createStore(mainReducer, composeEnhancers(
-    Redux.applyMiddleware(thunk, reduxWebsocketMiddleware)
+    Redux.applyMiddleware(thunk, reduxWebsocketMiddleware, socketMiddleware)
 ));
 
 const mainComponent =
