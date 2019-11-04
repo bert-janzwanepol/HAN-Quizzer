@@ -33,6 +33,8 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopo
 }).then(() => {
     return seedQuestion()
 }).then(() => {
+    return mockGame()
+}).then(() => {
     db.close();
 });
 
@@ -64,4 +66,21 @@ async function seedQuestion() {
             resolve()
         })
     })
+}
+
+async function mockGame() {
+    await Game.deleteMany();
+
+    await Game.create({
+        quizmaster: 'Bert-Jan',
+        rounds: [],
+        teams: [
+            {
+                name: 'my team',
+                approved: false,
+                score: 0
+            }
+        ],
+        password: 'abcde'
+    });
 }
