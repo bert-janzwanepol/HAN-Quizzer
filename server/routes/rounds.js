@@ -4,12 +4,10 @@ const router = express.Router()
 
 const questionsRouter = require('./questions')
 
-router.use('/:roundnumber', (req, res, next) => {
+router.use('/:roundnumber/questions', (req, res, next) => {
     req.roundnumber = req.params.roundnumber
     next()
-})
-
-router.use('/:roundnumber/questions', questionsRouter)
+}, questionsRouter)
 
 router.put('/:roundnumber/categories', async (req, res) => {
     const game = req.game
@@ -18,7 +16,18 @@ router.put('/:roundnumber/categories', async (req, res) => {
     game.markModified('rounds')
     game.save()
 
-    res.status(200).send()
+    res.sendStatus(200)
+})
+
+router.post('/:roundnumber/start', (req, res) => {
+    req.app.get('wss').broadcast({ type: 'STARTROUND' }, game.password, 'quizmaster', 'teams')
+    res.sendStatus(200)
+})
+
+router.put('/:roundnumber/close', (req, res) => {
+    req.app.get('wss').broadcast({ type: 'ROUNDCLOSED' }, game.password, 'teams')
+
+    res.sendStatus(200)
 })
 
 module.exports = router;
