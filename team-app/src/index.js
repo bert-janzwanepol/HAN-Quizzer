@@ -8,6 +8,22 @@ import { mainReducer } from './reducers/application';
 
 import App from './components/App';
 
+import reduxWebsocket from '@giantmachines/redux-websocket';
+
+const websocketOptions = {
+    onOpen: (socket) => {
+        let initMessage = {
+            initial: true,
+            password: theStore.getState().application.roomkey,
+            token: sessionStorage.getItem('token')
+        }
+
+        socket.send(JSON.stringify(initMessage))
+    }
+}
+
+const reduxWebsocketMiddleware = reduxWebsocket(websocketOptions);
+
 // const logger = (store) => (next) => (action) => {
 //     console.log('ACTION:', action.type, action);
 //     let result = next(action);
@@ -17,7 +33,7 @@ import App from './components/App';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
 const theStore = Redux.createStore(mainReducer, composeEnhancers(
-    Redux.applyMiddleware(thunk)
+    Redux.applyMiddleware(thunk, reduxWebsocketMiddleware)
 ));
 
 const mainComponent =
