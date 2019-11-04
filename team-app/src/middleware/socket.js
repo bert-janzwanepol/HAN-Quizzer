@@ -1,4 +1,4 @@
-import { setWaitStatusAction } from '../reducers/application'
+import { setWaitStatusAction, approveTeamAction } from '../reducers/application'
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 
 const socketMiddleware = () => {
@@ -10,6 +10,7 @@ const socketMiddleware = () => {
                 switch (message) {
                     case 'TEAMCHANGE':
                         store.dispatch(setWaitStatusAction(false));
+                        store.dispatch(approveTeamAction(true));
                         break;
                     default:
                         break;

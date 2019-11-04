@@ -54,6 +54,13 @@ button {
     font-weight: 700;
 }
 
+.app > div,
+.app > div > div {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
 /* LOADING INDICATOR FROM loading.io */
 .lds-ripple {
     align-self: center;
