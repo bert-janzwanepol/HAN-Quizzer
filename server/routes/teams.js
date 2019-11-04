@@ -37,7 +37,7 @@ router.put('/:teamname/approve', async (req, res) => {
         res.status(200).send()
 
         req.app.get('wss').broadcast({ type: 'TEAMCHANGE', roomkey: game.password }, game.password, 'quizmaster')
-        req.app.get('wss').sendToTeam({ type: 'TEAMCHANGE' }, game.password, team.name)
+        req.app.get('wss').sendToTeam({ type: 'TEAMCHANGE', approved: team.approved }, game.password, team.name)
     } else {
         const err = { code: "RESNOTFOUND" }
         next(err)
