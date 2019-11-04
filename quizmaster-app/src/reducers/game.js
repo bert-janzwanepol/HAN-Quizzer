@@ -111,6 +111,23 @@ export const fetchTeams = (roomkey) => {
     }
 }
 
+export const setTeamStatus = (status, roomkey, teamname) => {
+    return (dispatch) => {
+
+        fetch('http://localhost:3000/games/' + roomkey + '/teams/' + teamname + '/approve', {
+            method: 'POST',
+            headers: {
+                token: sessionStorage.getItem('token')
+            }
+        })
+            .then(res => res.json())
+            .then(json => {
+                // dispatch(deleteTeamAction)
+                console.log('team deleted')
+            })
+    }
+}
+
 export const connectWS = () => {
     return dispatch => {
         dispatch(wsConnectAction);

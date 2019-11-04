@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 
-import { fetchTeams, setTeamStatusAction } from '../reducers/game'
+import { fetchTeams, setTeamStatus } from '../reducers/game'
 
 class TeamListUI extends Component {
 
@@ -18,7 +18,7 @@ class TeamListUI extends Component {
                     <span>{team.name}</span>
 
                     {/* accept button */}
-                    <button className="icon-button accept" onClick={() => this.props.setTeamStatus(team.name, true)}>
+                    <button className="icon-button accept" onClick={() => this.props.setTeamStatus(true, this.props.roomkey, team.name)}>
                         <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check">
                             <polyline fill="none" stroke="#000" strokeWidth="1.1" points="4,10 8,15 17,4"></polyline>
                         </svg>
@@ -66,7 +66,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setTeamStatus: (teamname, approved) => dispatch(setTeamStatusAction(teamname, approved)),
+        setTeamStatus: (approved, roomkey, teamname) => dispatch(setTeamStatus(approved, roomkey, teamname)),
         fetchTeams: (roomkey) => dispatch(fetchTeams(roomkey))
     }
 }
