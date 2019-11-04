@@ -9,7 +9,8 @@ import {
 import '../App.css';
 import Logo from './Logo';
 import SignupForm from './Signup';
-import TitleMessage from './TitleMessage';
+import Question from './Question';
+
 // import LoadingIndicator from './LoadingIndicator';
 // import Question from './Question';
 // import Result from './Result';
@@ -20,13 +21,18 @@ function App() {
     <Router>
       <div className="app">
         <Switch>
-          <Route exact path="/">
-            <header>
-              <Logo />
-              <TitleMessage title="Please enter a teamname :)" />
-            </header>
-            <SignupForm />
-          </Route>
+          {/* signup */}
+          <Route exact path="/" render={() => {
+            return <div>
+              <header>
+                <Logo />
+              </header>
+              <SignupForm />
+            </div>
+          }} />
+
+          {/* awaiting confirmation */}
+          <Route exact path="/question" component={Question} />
         </Switch>
       </div>
     </Router>

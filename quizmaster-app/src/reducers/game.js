@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { connect, send } from '@giantmachines/redux-websocket';
+import { connect } from '@giantmachines/redux-websocket';
 
 export const CREATE_GAME = 'CREATE_GAME';
 export const FETCH_TEAMS = 'FETCH_TEAMS';
@@ -64,7 +64,7 @@ export const createGame = () => {
 }
 
 export const fetchTeams = (roomkey) => {
-    console.log(roomkey)
+
     return (dispatch) => {
         fetch('http://localhost:3000/games/' + roomkey + '/teams',
             {
@@ -77,10 +77,11 @@ export const fetchTeams = (roomkey) => {
                 dispatch(fetchTeamsAction(json.teams))
             });
     }
+
 }
 
 export const setTeamStatus = (status, roomkey, teamname) => {
-    console.log(roomkey);
+
     return (dispatch) => {
         // dispatch(setWaitstatusAction())
         fetch('http://localhost:3000/games/' + roomkey + '/teams/' + teamname + '/approve',
@@ -94,4 +95,5 @@ export const setTeamStatus = (status, roomkey, teamname) => {
                 body: JSON.stringify({ teamname: teamname })
             })
     }
+
 }
