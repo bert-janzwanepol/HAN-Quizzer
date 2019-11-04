@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
 
         game.addTeam(req.body.name)
         res.json({ token: token })
-        req.app.get('wss').broadcast({ type: 'TEAMCHAGE' }, game.password, 'quizmaster')
+        req.app.get('wss').broadcast({ type: 'TEAMCHANGE' }, game.password, 'quizmaster')
     }
 })
 
