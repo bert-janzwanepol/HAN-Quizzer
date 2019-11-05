@@ -26,6 +26,17 @@ router.get('/', (req, res) => {
     res.json({ teams: req.game.teams })
 })
 
+router.delete('/:teamname', async (req, res) => {
+    const game = req.game
+    game.teams = game.teams.filter(t => req.params.teamname !== t.name)
+    game.markModified('teams')
+    game.save()
+    req.app.get('wss').sendToTeam({ type: 'TEAMDELETED' }, game.password, req.params.teamname)
+    req.app.get('wss').removeTeam(game.password, req.params.teamname)
+
+    res.sendStatus(200)
+})
+
 router.put('/:teamname/approve', async (req, res) => {
     const game = req.game
     const team = game.teams.find(t => t.name === req.params.teamname)

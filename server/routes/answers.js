@@ -12,8 +12,7 @@ router.post('/', async (req, res) => {
     if (!answers.find(answer => answer.teamName === team.name && answer.correct !== null)) {
         const answer = new Answer({
             teamName: team.name,
-            answer: req.body.answer,
-            correct: null
+            answer: req.body.answer
         })
         answers.push(answer)
         game.markModified('rounds')

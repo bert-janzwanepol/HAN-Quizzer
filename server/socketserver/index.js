@@ -52,6 +52,17 @@ exports.createServer = (httpServer) => {
         }
     }
 
+    wss.removeTeam = (gamepassword, teamname) => {
+        const game = games.find(g => g.password === gamepassword)
+        if (game) {
+            const team = game.teams.find(t => t.name === teamname)
+            if (team) {
+                team.close()
+            }
+            game.teams = game.teams.filter(t => t.name !== teamname)
+        }
+    }
+
     return wss
 }
 
