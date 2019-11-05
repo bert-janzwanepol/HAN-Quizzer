@@ -7,6 +7,7 @@ import { setInputFieldAction } from '../reducers/application';
 class QuestionUI extends Component {
 
     render() {
+        let message = this.props.gameStarted ? this.props.waitingForQuestionMsg : this.props.waitingForStartMsg;
 
         return (
 
@@ -21,7 +22,7 @@ class QuestionUI extends Component {
                 </>
                 :
                 <div>
-                    <TitleMessage title={this.props.waitingMessage} />
+                    <TitleMessage title={message} />
                     <LoadingIndicator />
                 </div>
         )
@@ -31,8 +32,10 @@ class QuestionUI extends Component {
 const mapStateToProps = (state) => {
     return {
         question: state.game.currentQuestion,
-        started: state.game.started,
-        waitingMessage: state.game.waitingMessage,
+        gameStarted: state.game.gameStarted,
+        roundStarted: state.game.roundStarted,
+        waitingForQuestionMsg: state.game.waitingForQuestionMsg,
+        waitingForStartMsg: state.game.waitingForStartMsg,
         answer: state.game.answer
     }
 }

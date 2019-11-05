@@ -3,7 +3,16 @@ import { connect } from '@giantmachines/redux-websocket';
 
 export const CREATE_GAME = 'CREATE_GAME';
 export const ROUND_STARTED = 'ROUND_STARTED';
+
 export const CATEGORIES_RECEIVED = 'CATEGORIES_RECEIVED';
+export const CATEGORY_SELECTED = 'CATEGORY_SELECTED';
+export const CATEGORY_DESELECTED = 'CATEGORY_DESELECTED';
+
+export const QUESTIONS_RECEIVED = 'QUESTIONS_RECEIVED';
+export const QUESTION_SELECTED = 'QUESTION_SELECTED';
+export const QUESTION_DESELECTED = 'QUESTION_DESELECTED';
+export const QUESTION_STARTED = 'QUESTION_STARTED';
+export const QUESTION_STOPPED = 'QUESTION_STOPPED';
 
 export const FETCH_TEAMS = 'FETCH_TEAMS';
 export const SET_TEAM_STATUS = 'SET_TEAM_STATUS';
@@ -29,12 +38,30 @@ export const newRoundStartAction = (status) => {
     return { type: ROUND_STARTED, status }
 }
 
+export const setCategorySelectedAction = (category) => {
+    return { type: CATEGORY_SELECTED, category }
+}
+
+export const setCategoryDeselectedAction = (category) => {
+    return { type: CATEGORY_DESELECTED, category }
+}
+
+export const getRoundQuestionsAction = (questions) => {
+    return { type: QUESTIONS_RECEIVED, questions }
+}
+
+export const setRoundQuestionAction = (question) => {
+    return { type: QUESTION_SELECTED, question }
+}
 
 const initialState = {
     game: [],
     categories: [],
+    selectedCategories: [],
     newRoundStarted: false,
-    roundNumber: 0
+    roundNumber: 0,
+    questions: [],
+    selectedQuestionIndex: 0
 }
 
 export const gameReducer = produce((draft = initialState, action) => {
@@ -46,6 +73,18 @@ export const gameReducer = produce((draft = initialState, action) => {
         case CATEGORIES_RECEIVED:
             draft.categories = action.categories;
             break;
+
+        case CATEGORY_SELECTED:
+            draft.selectedCategories.push(action.category)
+            break
+
+        case CATEGORY_DESELECTED:
+            draft.selectedCategories.splice(draft.selectedCategories.indexOf(action.category), 1)
+            break;
+
+        case QUESTION_SELECTED:
+            draft.selectedQuestionIndex = action.question
+            break
 
         case FETCH_TEAMS:
             draft.game.teams = action.teams;
@@ -62,8 +101,9 @@ export const gameReducer = produce((draft = initialState, action) => {
             draft.roundNumber++;
             break;
 
-        // case CATEGORIES_SUBMITTED:
-        //     draft.
+        case QUESTIONS_RECEIVED:
+            draft.questions = action.questions
+            break;
 
         default:
             return draft;
@@ -87,6 +127,20 @@ export const createGame = () => {
             })
     }
 }
+
+export const startGame = (roomkey) => {
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/start', {
+            method: 'put',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+                token: sessionStorage.getItem('token')
+            }
+        })
+    }
+}
+
 
 export const fetchTeams = (roomkey) => {
 
@@ -136,5 +190,50 @@ export const fetchCategories = () => {
             .then(json => {
                 dispatch(categoriesReceivedAction(json.categories))
             });
+    }
+}
+
+export const setRoundCategories = (roomkey, roundnumber, event, categories) => {
+    event.preventDefault();
+
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/categories',
+            {
+                method: 'put',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                    token: sessionStorage.getItem('token')
+                },
+                body: JSON.stringify({ categories: categories })
+            })
+    }
+}
+
+export const fetchRoundQuestions = (roomkey, roundnumber) => {
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/askedquestions/suggestions',
+            {
+                headers: {
+                    token: sessionStorage.getItem('token')
+                },
+            })
+            .then(res => res.json())
+            .then(json => dispatch(getRoundQuestionsAction(json.questions)))
+    }
+}
+
+export const openQuestion = (roomkey, roundnumber, event, questionId) => {
+    event.preventDefault();
+
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/askedquestions',
+            {
+                method: 'post',
+                headers: {
+                    token: sessionStorage.getItem('token')
+                },
+                body: JSON.stringify({ questionId: questionId })
+            })
     }
 }

@@ -74,9 +74,11 @@ export const applicationReducer = produce((draft = initialState, action) => {
         case SEND_APPLICATION:
             action.event.preventDefault();
             return draft;
+
         case TEAM_ACCEPTED:
             sessionStorage.setItem('token', action.token);
             break;
+
         case TEAM_APPROVED:
             draft.approved = action.status;
             break;

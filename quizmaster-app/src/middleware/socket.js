@@ -1,4 +1,4 @@
-import { fetchTeams } from '../reducers/game'
+import { fetchTeams, newRoundStartAction } from '../reducers/game'
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 
 const socketMiddleware = () => {
@@ -6,11 +6,16 @@ const socketMiddleware = () => {
         switch (action.type) {
             case REDUX_WEBSOCKET_MESSAGE:
                 const message = JSON.parse(action.payload.message);
+                console.log(action);
                 switch (message.type) {
                     case 'TEAMCHANGE':
-                        console.log(action);
                         store.dispatch(fetchTeams(message.roomkey));
                         break;
+
+                    case 'STARTGAME':
+                        store.dispatch(newRoundStartAction(true));
+                        break;
+
                     default:
                         break;
                 }
