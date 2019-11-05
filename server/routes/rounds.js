@@ -2,9 +2,9 @@ require('../model/game')
 const express = require('express')
 const router = express.Router()
 
-const questionsRouter = require('./questions')
+const questionsRouter = require('./askedQuestions')
 
-router.use('/:roundnumber/questions', (req, res, next) => {
+router.use('/:roundnumber/askedquestions', (req, res, next) => {
     req.roundnumber = req.params.roundnumber
     next()
 }, questionsRouter)
