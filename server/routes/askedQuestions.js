@@ -9,8 +9,8 @@ const AskedQuestion = mongoose.model('AskedQuestion')
 
 const answersRouter = require('./answers')
 
-router.use('/:questionNumber/answers', (req, res, next) => {
-    req.questionNumber = req.params.questionNumber
+router.use('/:questionnumber/answers', (req, res, next) => {
+    req.questionNumber = req.params.questionnumber
     next()
 }, answersRouter)
 

@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
     } else {
         const token = jwt.sign({
             role: 'team',
-            name: req.body.name,
+            name: req.body.name
         }, process.env.JWT_SECRET)
 
         game.addTeam(req.body.name)
