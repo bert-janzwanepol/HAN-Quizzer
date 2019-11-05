@@ -11,7 +11,6 @@ import mainReducer from './reducers';
 import socketMiddleware from './middleware/socket';
 
 import reduxWebsocket from '@giantmachines/redux-websocket';
-
 // send the first message on open to authenticate the websocket
 const websocketOptions = {
     onOpen: (socket) => {
@@ -26,7 +25,6 @@ const websocketOptions = {
     }
 }
 const reduxWebsocketMiddleware = reduxWebsocket(websocketOptions);
-
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
 const theStore = Redux.createStore(mainReducer, composeEnhancers(

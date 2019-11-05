@@ -43,6 +43,10 @@ button {
     width: 16rem;
 }
 
+.button--secondary {
+  background: grey;
+}
+
 .form-error-message {
     color: red;
 }

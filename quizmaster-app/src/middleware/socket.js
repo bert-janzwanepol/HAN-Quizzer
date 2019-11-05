@@ -1,7 +1,6 @@
 import { fetchTeams } from '../reducers/game'
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 
-
 const socketMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
@@ -10,7 +9,6 @@ const socketMiddleware = () => {
                 switch (message.type) {
                     case 'TEAMCHANGE':
                         console.log(action);
-                        // draft.awaitingConfirmation = false
                         store.dispatch(fetchTeams(message.roomkey));
                         break;
                     default:
@@ -19,7 +17,6 @@ const socketMiddleware = () => {
                 break;
 
             default:
-                console.log('the next action:', action);
                 return next(action);
         }
     };
