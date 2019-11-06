@@ -1,5 +1,5 @@
 import { setWaitStatusAction, approveTeamAction, rejectTeamAction } from '../reducers/application';
-import { startGameAction, getQuestion, setNewQuestionAction, setAnswerAction } from '../reducers/game';
+import { startGameAction, getQuestion, setNewQuestionAction, setAnswerAction, startNewRoundAction } from '../reducers/game';
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 export const REDUX_WEBSOCKET_CLOSED = 'REDUX_WEBSOCKET::CLOSED';
 
@@ -22,14 +22,16 @@ const socketMiddleware = () => {
                     case 'QUESTIONASKED':
                         let payload = JSON.parse(action.payload.message)
                         let questionId = payload.questionId;
-                        let roundNumber = payload.roundNumber;
-                        let questionNumber = payload.questionNumber;
 
-                        store.dispatch(getQuestion(questionId, roundNumber, questionNumber));
+                        store.dispatch(getQuestion(questionId));
                         break;
                     case 'QUESTIONCLOSED':
                         store.dispatch(setNewQuestionAction(''));
                         store.dispatch(setAnswerAction(''));
+                        break;
+
+                    case 'STARTROUND':
+                        store.dispatch(startNewRoundAction())
                         break;
                     default:
                         break;

@@ -62,15 +62,12 @@ router.put('/:questionNumber/close', async (req, res) => {
     game.markModified('rounds')
     await game.save()
 
-    req.app.get('wss').broadcast({ type: 'QUESTIONCLOSED' }, game.password, 'teams')
-    req.app.get('wss').broadcast({ type: 'QUESTIONCLOSED' }, game.password, 'scoreboard')
-
+    req.app.get('wss').broadcast({ type: 'QUESTIONCLOSED' }, game.password, 'teams', 'scoreboard')
     res.sendStatus(201)
 })
 
 router.put('/:questionNumber/next', (req, res) => {
     req.app.get('wss').broadcast({ type: 'NEXTQUESTION' }, req.game.password, 'teams')
-
     res.sendStatus(201)
 })
 

@@ -7,6 +7,7 @@ export const GET_QUESTION = 'GET_QUESTION';
 export const NEW_QUESTION = 'NEW_QUESTION';
 export const SET_ANSWER = 'SET_ANSWER';
 export const SET_SUBMIT_STATUS = 'SET_SUBMIT_STATUS';
+export const NEW_ROUND = 'NEW_ROUND'
 
 // ACTION CREATORS
 export const startGameAction = () => {
@@ -15,12 +16,18 @@ export const startGameAction = () => {
     }
 }
 
+export const startNewRoundAction = () => {
+    return {
+        type: NEW_ROUND
+    }
+}
+
 export const getQuestionAction = (questionId) => {
     return { type: GET_QUESTION, questionId }
 }
 
-export const setNewQuestionAction = (question, roundNumber, questionNumber) => {
-    return { type: NEW_QUESTION, question, roundNumber, questionNumber }
+export const setNewQuestionAction = (question) => {
+    return { type: NEW_QUESTION, question }
 }
 
 export const setAnswerAction = (value) => {
@@ -52,12 +59,12 @@ export const gameReducer = produce((draft = initialState, action) => {
 
         case GAME_STARTED:
             draft.gameStarted = true;
+            draft.roundNumber++;
             break;
 
         case NEW_QUESTION:
             draft.question = action.question;
-            draft.roundNumber = action.roundNumber;
-            draft.questionNumber = action.questionNumber;
+            draft.questionNumber++;
             break;
 
         case SET_ANSWER:
@@ -68,12 +75,17 @@ export const gameReducer = produce((draft = initialState, action) => {
             draft.submitted = action.status;
             break;
 
+        case NEW_ROUND:
+            draft.questionNumber = 0;
+            draft.roundNumber++;
+            break;
+
         default:
             return draft
     }
 })
 
-export const getQuestion = (questionId, roundNumber, questionNumber) => {
+export const getQuestion = (questionId) => {
     return (dispatch) => {
         fetch('http://localhost:3000/questions/' + questionId,
             {
@@ -82,7 +94,7 @@ export const getQuestion = (questionId, roundNumber, questionNumber) => {
                 }
             })
             .then(res => res.json())
-            .then(json => dispatch(setNewQuestionAction(json, roundNumber, questionNumber)))
+            .then(json => dispatch(setNewQuestionAction(json)))
     }
 }
 
