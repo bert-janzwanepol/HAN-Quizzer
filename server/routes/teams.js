@@ -1,6 +1,7 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
+const roleAuthentication = require('../middleware/roleAuthentication')
 
 const router = express.Router()
 const Game = mongoose.model('Game')
@@ -26,9 +27,12 @@ router.get('/', (req, res) => {
     res.json({ teams: req.game.teams })
 })
 
+router.use(roleAuthentication.roleAuthentication('quizmaster'))
+
 router.delete('/:teamname', async (req, res) => {
     const game = req.game
     game.teams = game.teams.filter(t => req.params.teamname !== t.name)
+
     game.markModified('teams')
     game.save()
     req.app.get('wss').sendToTeam({ type: 'TEAMDELETED' }, game.password, req.params.teamname)

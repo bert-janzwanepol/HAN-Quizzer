@@ -1,18 +1,23 @@
 require('../model/game')
 const express = require('express')
+const roleAuthentication = require('../middleware/roleAuthentication')
 const router = express.Router()
 
-const questionsRouter = require('./askedQuestions')
+const askedQuestionsRouter = require('./askedQuestions')
 
-router.use('/:roundnumber/askedquestions', (req, res, next) => {
+router.use('/:roundnumber', (req, res, next) => {
     req.roundnumber = req.params.roundnumber
-    next()
-}, questionsRouter)
+    game.rounds[req.roundnumber - 1] ? next() : next({ code: 'RESNOTFOUND' })
+})
+
+router.use('/:roundnumber/askedquestions', askedQuestionsRouter)
+
+router.use(roleAuthentication.roleAuthentication('quizmaster'))
 
 router.put('/:roundnumber/categories', async (req, res) => {
     const game = req.game
 
-    game.rounds[req.params.roundnumber - 1].categories = req.body.categories
+    game.rounds[req.roundnumber - 1].categories = req.body.categories
     game.markModified('rounds')
     game.save()
 
