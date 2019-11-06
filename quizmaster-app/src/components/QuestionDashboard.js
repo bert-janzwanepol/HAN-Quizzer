@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 import { withRouter } from "react-router";
 
-import { fetchRoundQuestions, setNewRoundAction, setRoundQuestionAction, openQuestion, closeQuestion, nextQuestion } from '../reducers/game';
+import {
+    fetchRoundQuestions,
+    setNewRoundAction,
+    setRoundQuestionAction,
+    openQuestion,
+    closeQuestion,
+    nextQuestion,
+    resetSelectedCategoriesAction,
+    resetQuestionNumberAction,
+    setRoundNumber
+} from '../reducers/game';
 import AnswerList from './AnswerList';
 
 class QuestionDashboardUI extends Component {
@@ -49,7 +59,7 @@ class QuestionDashboardUI extends Component {
                     </div>
 
                     {
-                        (this.props.questionNumber === 0 || (this.props.questionNumber === 2 && this.props.questionOpen === true)) &&
+                        (this.props.questionNumber <= 1 || (this.props.questionNumber === 2 && this.props.questionOpen === true)) &&
                         <div className="button-group">
                             <button
                                 disabled={this.props.questionOpen || this.props.answers[0] !== undefined}
@@ -79,9 +89,9 @@ class QuestionDashboardUI extends Component {
                         <div className="button-group">
                             <button
                                 onClick={(e) => {
+                                    this.props.resetCategories();
+                                    this.props.setRoundNumber((this.props.roundNumber + 1))
                                     this.props.history.push('/game');
-
-
                                 }}
                             >
                                 Doorgaan
@@ -128,7 +138,10 @@ const mapDispatchToProps = (dispatch) => {
         nextQuestion: (roomkey, roundnumber, questionNumber, event) => dispatch(nextQuestion(roomkey, roundnumber, questionNumber, event)),
         nextRound: () => {
             dispatch(setNewRoundAction())
-        }
+        },
+        resetCategories: () => dispatch(resetSelectedCategoriesAction()),
+        resetQuestionNumber: () => dispatch(resetQuestionNumberAction()),
+        setRoundNumber: (number) => dispatch(setRoundNumber(number))
     }
 }
 

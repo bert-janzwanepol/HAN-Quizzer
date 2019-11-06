@@ -15,6 +15,9 @@ export const QUESTION_STARTED = 'QUESTION_STARTED';
 export const QUESTION_STOPPED = 'QUESTION_STOPPED';
 
 export const ROUND_OPEN = 'ROUND_OPEN';
+export const SET_ROUND_NUMBER = 'SET_ROUND_NUMBER';
+export const SET_QUESTION_NUMBER = 'SET_QUESTION_NUMBER';
+export const SET_SELECTED_CATEGORIES = 'SET_SELECTED_CATEGORIES';
 export const NEW_ROUND = 'NEW_ROUND';
 export const ANSWERS_RECEIVED = 'ANSWERS_RECEIVED';
 
@@ -45,6 +48,10 @@ export const setCategorySelectedAction = (category) => {
     return { type: CATEGORY_SELECTED, category }
 }
 
+export const resetSelectedCategoriesAction = () => {
+    return { type: SET_SELECTED_CATEGORIES }
+}
+
 export const setCategoryDeselectedAction = (category) => {
     return { type: CATEGORY_DESELECTED, category }
 }
@@ -73,13 +80,21 @@ export const getAnswerAction = (json) => {
     return { type: ANSWERS_RECEIVED, json }
 }
 
+export const resetQuestionNumberAction = () => {
+    return { type: SET_QUESTION_NUMBER }
+}
+
+export const setRoundNumber = (number) => {
+    return { type: SET_ROUND_NUMBER }
+}
+
 const initialState = {
     game: [],
     categories: [],
     selectedCategories: [],
     newRoundStarted: false,
     roundNumber: 1,
-    questionNumber: 0,
+    questionNumber: 1,
     questions: [],
     selectedQuestionIndex: 0,
     questionOpen: false,
@@ -122,10 +137,20 @@ export const gameReducer = produce((draft = initialState, action) => {
             draft.newRoundStarted = action.status;
             break;
 
-        case NEW_ROUND:
-            draft.questionNumber = 0;
-            draft.roundNumber++;
+        case SET_ROUND_NUMBER:
+            draft.roundNumber++;;
+            break;
+
+        case SET_QUESTION_NUMBER:
+            draft.questionNumber = 1;
+            break;
+
+        case SET_SELECTED_CATEGORIES:
             draft.selectedCategories = []
+            break;
+
+        case NEW_ROUND:
+            draft.questionNumber = 1;
             break;
 
         case QUESTION_STARTED:
