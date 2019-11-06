@@ -12,7 +12,7 @@ import TitleMessage from './TitleMessage';
 class GameDashboardUI extends Component {
 
     componentDidMount() {
-        this.props.createGame();
+        if (this.props.game.length !== undefined) this.props.createGame();
     }
 
     render() {
@@ -32,7 +32,6 @@ class GameDashboardUI extends Component {
                         <div>
                             <TitleMessage title={`Ronde ${this.props.roundNumber}. Kies 3 categorieën`} />
                             <CategoryList />
-                            <button className="button--secondary">Stop spel</button>
                         </div>
                 }
             </div>

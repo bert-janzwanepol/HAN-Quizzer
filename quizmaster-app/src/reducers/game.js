@@ -15,6 +15,7 @@ export const QUESTION_STARTED = 'QUESTION_STARTED';
 export const QUESTION_STOPPED = 'QUESTION_STOPPED';
 
 export const ROUND_OPEN = 'ROUND_OPEN';
+export const NEW_ROUND = 'NEW_ROUND';
 export const ANSWERS_RECEIVED = 'ANSWERS_RECEIVED';
 
 export const FETCH_TEAMS = 'FETCH_TEAMS';
@@ -64,6 +65,10 @@ export const setRoundCloseAction = () => {
     return { type: QUESTION_STOPPED }
 }
 
+export const setNewRoundAction = () => {
+    return { type: NEW_ROUND }
+}
+
 export const getAnswerAction = (json) => {
     return { type: ANSWERS_RECEIVED, json }
 }
@@ -73,7 +78,7 @@ const initialState = {
     categories: [],
     selectedCategories: [],
     newRoundStarted: false,
-    roundNumber: 0,
+    roundNumber: 1,
     questionNumber: 0,
     questions: [],
     selectedQuestionIndex: 0,
@@ -115,7 +120,12 @@ export const gameReducer = produce((draft = initialState, action) => {
 
         case ROUND_STARTED:
             draft.newRoundStarted = action.status;
+            break;
+
+        case NEW_ROUND:
+            draft.questionNumber = 0;
             draft.roundNumber++;
+            draft.selectedCategories = []
             break;
 
         case QUESTION_STARTED:
@@ -291,7 +301,7 @@ export const closeQuestion = (roomkey, roundnumber, event, questionNumber) => {
     event.preventDefault();
 
     return (dispatch) => {
-        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/askedquestions/' + questionNumber + '/close',
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/askedquestions/' + (questionNumber - 1) + '/close',
             {
                 method: 'put',
                 headers: {

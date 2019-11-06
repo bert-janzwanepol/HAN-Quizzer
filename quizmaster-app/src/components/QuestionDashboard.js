@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 import { withRouter } from "react-router";
 
-import { fetchRoundQuestions, setRoundQuestionAction, openQuestion, closeQuestion, nextQuestion } from '../reducers/game';
+import { fetchRoundQuestions, setNewRoundAction, setRoundQuestionAction, openQuestion, closeQuestion, nextQuestion } from '../reducers/game';
 import AnswerList from './AnswerList';
 
 class QuestionDashboardUI extends Component {
@@ -17,7 +17,7 @@ class QuestionDashboardUI extends Component {
 
             return (
                 <div key={question._id}>
-                    <input type="radio" value={question._id} id={question._id} name={question._id} onChange={() => { this.props.selectQuestion(index, !this.props.questionOpen) }} checked={checked} />
+                    <input type="radio" value={question._id} id={question._id} name={question._id} onChange={() => { this.props.selectQuestion(index, (!this.props.questionOpen && this.props.questionNumber !== 13)) }} checked={checked} />
                     <label htmlFor={question._id}>
                         {question.question} ({question.category})
                     </label>
@@ -48,28 +48,53 @@ class QuestionDashboardUI extends Component {
                         {this.props.questions.length !== 0 && this.props.questions[this.props.selectedQuestionIndex].answer}
                     </div>
 
-                    <div className="button-group">
-                        <button
-                            disabled={this.props.questionOpen || this.props.answers[0] !== undefined}
-                            onClick={(e) => {
-                                this.props.openQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questions[this.props.selectedQuestionIndex]._id);
-                            }}
-                        >
-                            Stellen
-                        </button>
-                        <button
-                            disabled={!this.props.questionOpen}
-                            onClick={(e) => { this.props.closeQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questionNumber) }}
-                        >
-                            Sluiten
-                        </button>
-                        <button
-                            disabled={!this.props.questionOpen && this.props.answers[0] === undefined}
-                            onClick={(e) => { this.props.nextQuestion(this.props.roomkey, this.props.roundNumber, this.props.questionNumber, e) }}
-                        >
-                            Volgende
-                        </button>
-                    </div>
+                    {
+                        (this.props.questionNumber === 0 || (this.props.questionNumber === 2 && this.props.questionOpen === true)) &&
+                        <div className="button-group">
+                            <button
+                                disabled={this.props.questionOpen || this.props.answers[0] !== undefined}
+                                onClick={(e) => {
+                                    this.props.openQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questions[this.props.selectedQuestionIndex]._id);
+                                }}
+                            >
+                                Stellen
+                                </button>
+                            <button
+                                disabled={!this.props.questionOpen}
+                                onClick={(e) => { this.props.closeQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questionNumber) }}
+                            >
+                                Sluiten
+                                </button>
+                            <button
+                                disabled={!this.props.questionOpen && this.props.answers[0] === undefined}
+                                onClick={(e) => { this.props.nextQuestion(this.props.roomkey, this.props.roundNumber, this.props.questionNumber, e) }}
+                            >
+                                Volgende
+                                </button>
+                        </div>
+                    }
+
+                    {
+                        (this.props.questionNumber === 2 && this.props.questionOpen === false) &&
+                        <div className="button-group">
+                            <button
+                                onClick={(e) => {
+                                    this.props.history.push('/game');
+
+
+                                }}
+                            >
+                                Doorgaan
+                                </button>
+                            <button
+                                onClick={(e) => { this.props.closeQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questionNumber) }}
+                            >
+                                Stoppen
+                                </button>
+                        </div>
+                    }
+
+
                 </aside>
                 <main>
                     <div className="team-answers">
@@ -100,7 +125,10 @@ const mapDispatchToProps = (dispatch) => {
         selectQuestion: (id, isClosed) => dispatch(setRoundQuestionAction(id, isClosed)),
         openQuestion: (roomkey, roundnumber, event, questionId) => dispatch(openQuestion(roomkey, roundnumber, event, questionId)),
         closeQuestion: (roomkey, roundnumber, event, questionId) => dispatch(closeQuestion(roomkey, roundnumber, event, questionId)),
-        nextQuestion: (roomkey, roundnumber, questionNumber, event) => dispatch(nextQuestion(roomkey, roundnumber, questionNumber, event))
+        nextQuestion: (roomkey, roundnumber, questionNumber, event) => dispatch(nextQuestion(roomkey, roundnumber, questionNumber, event)),
+        nextRound: () => {
+            dispatch(setNewRoundAction())
+        }
     }
 }
 
