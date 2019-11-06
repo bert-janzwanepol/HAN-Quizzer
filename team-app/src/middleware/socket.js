@@ -20,11 +20,11 @@ const socketMiddleware = () => {
 
                     case 'QUESTIONASKED':
                         let payload = JSON.parse(action.payload.message)
-                        let roomkey = store.getState().application.roomkey;
+                        let questionId = payload.questionId;
                         let roundNumber = payload.roundNumber;
                         let questionNumber = payload.questionNumber;
 
-                        store.dispatch(getQuestion(roomkey, roundNumber, questionNumber));
+                        store.dispatch(getQuestion(questionId, roundNumber, questionNumber));
                         break;
                     default:
                         break;

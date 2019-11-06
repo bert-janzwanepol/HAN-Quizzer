@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 import { withRouter } from "react-router";
 
-import { fetchRoundQuestions, setRoundQuestionAction, openQuestion } from '../reducers/game';
+import { fetchRoundQuestions, setRoundQuestionAction, openQuestion, getAnswers } from '../reducers/game';
 
 class QuestionDashboardUI extends Component {
 
@@ -75,7 +75,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getQuestions: (roomkey, roundnumber) => dispatch(fetchRoundQuestions(roomkey, roundnumber)),
         selectQuestion: (id) => dispatch(setRoundQuestionAction(id)),
-        openQuestion: (roomkey, roundnumber, event, questionId) => dispatch(openQuestion(roomkey, roundnumber, event, questionId))
+        openQuestion: (roomkey, roundnumber, event, questionId) => dispatch(openQuestion(roomkey, roundnumber, event, questionId)),
+        getAnswers: () => { dispatch(getAnswers()) }
     }
 }
 

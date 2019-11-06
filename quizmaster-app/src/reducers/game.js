@@ -231,9 +231,24 @@ export const openQuestion = (roomkey, roundnumber, event, questionId) => {
             {
                 method: 'post',
                 headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
                     token: sessionStorage.getItem('token')
                 },
                 body: JSON.stringify({ questionId: questionId })
+            })
+    }
+}
+
+export const getAnswers = (roomkey, roundnumber) => {
+
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/askedquestions',
+            {
+                method: 'get',
+                headers: {
+                    token: sessionStorage.getItem('token')
+                }
             })
     }
 }

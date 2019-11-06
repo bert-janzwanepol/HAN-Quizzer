@@ -1,4 +1,4 @@
-import { fetchTeams, newRoundStartAction } from '../reducers/game'
+import { fetchTeams, newRoundStartAction, getAnswers } from '../reducers/game'
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 
 const socketMiddleware = () => {
@@ -14,6 +14,9 @@ const socketMiddleware = () => {
 
                     case 'STARTGAME':
                         store.dispatch(newRoundStartAction(true));
+                        break;
+                    case 'NEWANSWER':
+                        // store.dispatch(getAnswers(store.getState().game.game.password, ));
                         break;
 
                     default:
