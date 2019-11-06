@@ -35,7 +35,7 @@ export const setQuestionAction = (question) => {
     return { type: NEW_QUESTION, question }
 }
 
-export const closeQuestion = () => {
+export const closeQuestionAction = () => {
     return { type: CLOSE_QUESTION }
 }
 
@@ -105,6 +105,17 @@ export const getQuestion = (questionId) => {
 }
 
 export const getStandings = (roomkey) => {
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/teams/standings', {
+            headers: {
+                token: sessionStorage.getItem('token')
+            }
+        }).then(res => res.json())
+            .then(standings => dispatch(setStandingsAction(standings)))
+    }
+}
+
+export const closeQuestion = () => {
     return (dispatch) => {
         fetch('http://localhost:3000/games/' + roomkey + '/teams/standings', {
             headers: {

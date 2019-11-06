@@ -31,15 +31,18 @@ gameSchema.methods.addTeam = async function (teamname) {
 }
 
 gameSchema.methods.start = async function () {
-    const round1 = new Round({
-        number: 1,
+    this.teams = this.teams.filter(t => t.approved)
+    this.save()
+}
+
+gameSchema.methods.startNewRound = async function () {
+    const round = new Round({
+        number: this.rounds.length + 1,
         maxQuestions: 12,
         questions: [],
         categories: []
     })
-
-    this.teams = this.teams.filter(t => t.approved)
-    this.rounds.push(round1)
+    this.rounds.push(round)
     this.save()
 }
 

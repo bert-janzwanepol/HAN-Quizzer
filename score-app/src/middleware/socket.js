@@ -28,7 +28,7 @@ const socketMiddleware = () => {
                         break;
 
                     case 'QUESTIONCLOSED':
-                        store.dispatch(closeQuestion());
+                        store.dispatch(closeQuestion(store.getState().application.roomkey));
                         break;
                     default:
                         break;

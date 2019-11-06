@@ -26,7 +26,8 @@ router.put('/:roundnumber/categories', async (req, res) => {
     res.sendStatus(200)
 })
 
-router.post('/:roundnumber/start', (req, res) => {
+router.post('/', (req, res) => {
+    req.game.startNewRound()
     req.app.get('wss').broadcast({ type: 'STARTROUND' }, game.password, 'quizmaster', 'teams')
     res.sendStatus(200)
 })
