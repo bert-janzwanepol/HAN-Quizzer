@@ -31,13 +31,13 @@ router.get('/standings', (req, res) => {
     const game = req.game
     const standing = []
 
-    game.teams.foreach(team => {
+    game.teams.forEach(team => {
         const teamStats = {
             teamname: team.name,
             totalRoundPoints: team.score,
-            answersCorrect: game.rounds.map(round => {
-                return round.questions.map(q => q.answers.find(a => a.teamName === team.name && correct === true)).length
-            })
+            answersCorrect: game.rounds.map(round =>
+                round.questions.map(q => q.answers.find(a => a.teamName === team.name && a.correct === true)).length
+            )
         }
         standing.push(teamStats)
     })

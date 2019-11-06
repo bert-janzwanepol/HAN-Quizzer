@@ -7,18 +7,27 @@ const initialState = {
     questionId: '',
     questionClosed: false,
     answer: '',
-    teams: []
+    teams: [],
+    standings: []
 }
 
 export const TEAMS_RECEIVED = 'TEAMS_RECEIVED';
 export const NEW_QUESTION = 'NEW_QUESTION';
 export const CLOSE_QUESTION = 'CLOSE_QUESTION';
 export const OPEN_QUESTION = 'OPEN_QUESTION';
+export const NEW_STANDINGS = 'NEW_STANDINGS';
 
 export const fetchTeamsAction = (json) => {
     return {
         type: TEAMS_RECEIVED,
         json
+    }
+}
+
+export const setStandingsAction = (standings) => {
+    return {
+        type: NEW_STANDINGS,
+        standings
     }
 }
 
@@ -55,6 +64,10 @@ export const scoreReducer = produce((draft = initialState, action) => {
         case CLOSE_QUESTION:
             draft.questionClosed = true;
             break;
+
+        case NEW_STANDINGS:
+            draft.standings = action.standings
+            return draft
 
         default:
             return draft
@@ -93,6 +106,17 @@ export const fetchTeams = (roomkey) => {
 //             })
 //     }
 // }
+
+export const getStandings = (roomkey) => {
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/teams/standings', {
+            headers: {
+                token: sessionStorage.getItem('token')
+            }
+        }).then(res => res.json())
+            .then(json => dispatch(setStandingsAction(json)))
+    }
+}
 
 export const getQuestion = (questionId, roundNumber, questionNumber) => {
     return (dispatch) => {

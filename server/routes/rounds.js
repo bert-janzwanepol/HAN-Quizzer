@@ -31,8 +31,11 @@ router.post('/:roundnumber/start', (req, res) => {
     res.sendStatus(200)
 })
 
-router.put('/:roundnumber/close', (req, res) => {
-    req.app.get('wss').broadcast({ type: 'ROUNDCLOSED' }, game.password, 'teams')
+router.put('/:roundnumber/close', async (req, res) => {
+    const game = req.game
+    await game.closeRound(req.roundnumber)
+
+    req.app.get('wss').broadcast({ type: 'ROUNDCLOSED' }, game.password, 'teams', 'scoreboard')
 
     res.sendStatus(200)
 })

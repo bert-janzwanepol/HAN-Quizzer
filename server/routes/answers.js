@@ -54,12 +54,11 @@ router.put('/', async (req, res) => {
 
     answer.correct = req.body.correct
     game.markModified('rounds')
-
-    req.body.correct ? game.teams.find(t => t.name === req.body.teamname).score++ : null
-    game.markModified('teams')
     await game.save()
 
     req.app.get('wss').sendToTeam({ type: 'ANSWERJUDGED' }, game.password, req.body.teamname)
+    req.app.get('wss').broadcast({ type: 'NEWSTANDINGS' }, game.password, 'scoreboard')
+
 
     res.sendStatus(200)
 })

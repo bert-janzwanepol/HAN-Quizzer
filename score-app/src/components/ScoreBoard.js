@@ -13,7 +13,6 @@ class ScoreboardUI extends Component {
                 <h2>Huidige vraag:</h2>
                 <Question />
                 <TeamList />
-
             </div>
         )
     }

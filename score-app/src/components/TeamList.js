@@ -9,20 +9,52 @@ class TeamListUI extends Component {
     }
 
     render() {
-        let acceptedList;
+        let tableRows
 
-        if (this.props.teams) {
-            acceptedList = this.props.teams.filter(team => team.approved === true).map(team => {
-                return <li key={team.name}>{team.name}</li>
-            });
+        if (this.props.standings.length > 0) {
+            tableRows = this.props.standings.map(team => {
+                return (
+                    <tr key={team.name + '-standing'}>
+                        <td key={team.name}>
+                            {team.teamname}
+                        </td>
+                        {team.answersCorrect.map(a => <td key={team.name + '-standing'}> {a}/12 </td>)}
+                        <td key={team.score}>
+                            {team.totalRoundPoints}
+                        </td>
+                    </tr>
+                )
+            })
+        } else if (this.props.teams) {
+            tableRows = this.props.teams.filter(team => team.approved === true).map((team) => {
+                return (
+                    <tr key={team.name}>
+                        <td key={team.name}>
+                            {team.name}
+                        </td>
+                    </tr>
+                )
+            })
         }
-
         return (
             <div className="team-lists">
                 <h3>Teams</h3>
-                <ul>
-                    {acceptedList}
-                </ul>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Teamnaam</th>
+                            {this.props.standings.length > 0 ? this.props.standings[0].answersCorrect.map((a, i) => {
+                                return (
+                                    <th key={'ronde-' + i}>Ronde {i + 1}</th>
+                                )
+                            }) : <th></th>}
+                            <th>Totaal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tableRows}
+                    </tbody>
+                </table>
             </div>
         )
     }
@@ -31,7 +63,8 @@ class TeamListUI extends Component {
 const mapStateToProps = (state) => {
     return {
         teams: state.score.teams,
-        roomkey: state.application.roomkey
+        roomkey: state.application.roomkey,
+        standings: state.score.standings
     }
 }
 
