@@ -15,8 +15,9 @@ router.post('/', async (req, res) => {
     const game = req.game
     const answers = game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1].answers
     const teamanswer = answers.find(answer => answer.teamName === team.name)
+    console.log()
 
-    if (!teamanswer || teamanswer.correct === null) {
+    if (!teamanswer || !teamanswer.correct) {
         const answer = new Answer({
             teamName: team.name,
             answer: req.body.answer
