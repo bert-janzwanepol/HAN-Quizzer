@@ -38,6 +38,7 @@ const socketMiddleware = () => {
             case REDUX_WEBSOCKET_CLOSED:
                 sessionStorage.clear()
                 store.dispatch(rejectTeamAction('Naam niet geaccepteerd'))
+                store.dispatch(setWaitStatusAction(false))
                 break
 
             default:
