@@ -4,6 +4,12 @@ const router = express.Router()
 
 const Answer = mongoose.model('Answer')
 
+router.get('/', (req, res) => {
+    res.json(
+        req.game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1].answers
+    )
+})
+
 router.post('/', async (req, res) => {
     const team = req.user
     const game = req.game
