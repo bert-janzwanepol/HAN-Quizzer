@@ -43,8 +43,12 @@ router.get('/', (req, res) => {
 router.put('/', async (req, res) => {
     const game = req.game
     const answer = game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1].answers.find(a => a.teamName === req.body.teamname)
+
     answer.correct = req.body.correct
     game.markModified('rounds')
+
+    req.body.correct ? game.teams.find(t => t.name === req.body.teamname).score++ : null
+    game.markModified('teams')
     await game.save()
 
     req.app.get('wss').sendToTeam({ type: 'ANSWERJUDGED' }, game.password, req.body.teamname)
