@@ -2,6 +2,7 @@ require('../model/question')
 require('../model/askedQuestion')
 const express = require('express');
 const mongoose = require('mongoose')
+const roleAuthentication = require('../middleware/roleAuthentication')
 const router = express.Router();
 
 const Question = mongoose.model('Question')
@@ -9,11 +10,25 @@ const AskedQuestion = mongoose.model('AskedQuestion')
 
 const answersRouter = require('./answers')
 
-router.use('/:questionnumber/answers', (req, res, next) => {
+router.use('/:questionnumber', (req, res, next) => {
     req.questionNumber = req.params.questionnumber
-    next()
-}, answersRouter)
+    game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1] ? next() : next({ code: 'RESNOTFOUND' })
+})
 
+router.use('/:questionnumber/answers', answersRouter)
+
+
+router.get('/:questionNumber', (req, res) => {
+    const game = req.game
+    const { question, categorie } = game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1]
+
+    res.json({
+        question: question,
+        categorie: categorie
+    })
+})
+
+router.use(roleAuthentication.roleAuthentication('quizmaster'))
 
 router.post('/', async (req, res) => {
     const game = req.game
@@ -41,15 +56,6 @@ router.get('/suggestions', async (req, res) => {
     res.json({ questions: questions })
 })
 
-router.get('/:questionNumber', (req, res) => {
-    const game = req.game
-    const { question, categorie } = game.rounds[req.roundnumber - 1].questions[questionNumber - 1]
-
-    res.json({
-        question: question,
-        categorie: categorie
-    })
-})
 
 
 router.put('/:questionNumber/close', async (req, res) => {

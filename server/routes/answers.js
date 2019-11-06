@@ -1,21 +1,15 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const roleAuthentication = require('../middleware/roleAuthentication')
 const router = express.Router()
 
 const Answer = mongoose.model('Answer')
-
-router.get('/', (req, res) => {
-    res.json(
-        req.game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1].answers
-    )
-})
 
 router.post('/', async (req, res) => {
     const team = req.user
     const game = req.game
     const answers = game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1].answers
     const teamanswer = answers.find(answer => answer.teamName === team.name)
-    console.log()
 
     if (!teamanswer || !teamanswer.correct) {
         const answer = new Answer({
@@ -32,7 +26,14 @@ router.post('/', async (req, res) => {
     } else {
         res.sendStatus(409)
     }
+})
 
+router.use(roleAuthentication.roleAuthentication('quizmaster'))
+
+router.get('/', (req, res) => {
+    res.json(
+        req.game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1].answers
+    )
 })
 
 router.put('/', async (req, res) => {

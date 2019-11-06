@@ -44,7 +44,6 @@ app.use(authentication.authentication().unless({
         { url: /\/teamapp\/*/ },
     ]
 }))
-app.use(errorHandler.errorHandler())
 
 // Routes
 app.use('/games', gamesRouter)
@@ -56,6 +55,8 @@ app.use('/', indexRouter)
 app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use('/teamapp', express.static(path.join(__dirname, 'public/apps/team-app')))
 
+//error middleware
+app.use(errorHandler.errorHandler())
 
 // WSS setup
 const wss = wssFactory.createServer(server)

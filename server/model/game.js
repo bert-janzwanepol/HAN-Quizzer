@@ -25,6 +25,7 @@ gameSchema.methods.addTeam = async function (teamname) {
     })
 
     this.teams.push(newTeam)
+    this.markModified('teams')
     await this.save()
 }
 
