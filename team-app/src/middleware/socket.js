@@ -1,4 +1,4 @@
-import { setWaitStatusAction, approveTeamAction } from '../reducers/application';
+import { setWaitStatusAction, approveTeamAction, rejectTeamAction } from '../reducers/application';
 import { startGameAction, getQuestion, setNewQuestionAction, setAnswerAction } from '../reducers/game';
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 export const REDUX_WEBSOCKET_CLOSED = 'REDUX_WEBSOCKET::CLOSED';
@@ -35,11 +35,10 @@ const socketMiddleware = () => {
                         break;
                 }
                 break;
-
-            // case REDUX_WEBSOCKET_CLOSED:
-            //     sessionStorage.clear()
-            //     window.location.href = '/' // Force refresh to remove state
-            //     break;
+            case REDUX_WEBSOCKET_CLOSED:
+                sessionStorage.clear()
+                store.dispatch(rejectTeamAction('Naam niet geaccepteerd'))
+                break
 
             default:
                 return next(action);
