@@ -51,6 +51,7 @@ router.put('/:teamname/approve', async (req, res) => {
         game.save()
 
         req.app.get('wss').broadcast({ type: 'TEAMCHANGE', roomkey: game.password }, game.password, 'quizmaster')
+        req.app.get('wss').broadcast({ type: 'TEAMCHANGE', roomkey: game.password }, game.password, 'scoreboard')
         req.app.get('wss').sendToTeam({ type: 'TEAMCHANGE', approved: team.approved }, game.password, team.name)
         res.sendStatus(200)
     } else {

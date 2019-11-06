@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
     await game.save()
 
     req.app.get('wss').broadcast({ type: 'QUESTIONASKED', questionId: req.body.questionId, roundNumber: game.rounds.length, questionNumber: game.rounds[req.roundnumber - 1].questions.length }, game.password, 'teams')
-
+    req.app.get('wss').broadcast({ type: 'QUESTIONASKED', questionId: req.body.questionId, roundNumber: game.rounds.length, questionNumber: game.rounds[req.roundnumber - 1].questions.length }, game.password, 'scoreboard')
     res.sendStatus(201)
 })
 
@@ -66,6 +66,7 @@ router.put('/:questionNumber/close', async (req, res) => {
     await game.save()
 
     req.app.get('wss').broadcast({ type: 'QUESTIONCLOSED' }, game.password, 'teams')
+    req.app.get('wss').broadcast({ type: 'QUESTIONCLOSED' }, game.password, 'scoreboard')
 
     res.sendStatus(201)
 })
