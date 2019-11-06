@@ -16,7 +16,11 @@ router.post('/', async (req, res) => {
             teamName: team.name,
             answer: req.body.answer
         })
-        answers.push(answer)
+        if (!teamanswer) {
+            answers.push(answer)
+        } else {
+            answers = answers.map(a => a.teamName === answer.teamName ? answer : a)
+        }
         game.markModified('rounds')
         await game.save()
 

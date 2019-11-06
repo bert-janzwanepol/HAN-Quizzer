@@ -47,5 +47,10 @@ router.put('/:password/start', (req, res) => {
     res.sendStatus(200)
 })
 
+router.put('/:password/close', (req, res) => {
+    req.app.get('wss').broadcast({ type: 'CLOSEGAME' }, game.password, 'quizmaster', 'teams')
+    res.sendStatus(200)
+})
+
 
 module.exports = router;
