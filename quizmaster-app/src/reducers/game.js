@@ -192,16 +192,30 @@ export const setTeamStatus = (status, roomkey, teamname) => {
 
     return (dispatch) => {
         // dispatch(setWaitstatusAction())
-        fetch('http://localhost:3000/games/' + roomkey + '/teams/' + teamname + '/approve',
-            {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json',
-                    token: sessionStorage.getItem('token')
-                },
-                body: JSON.stringify({ teamname: teamname })
-            })
+        if (status) {
+            fetch('http://localhost:3000/games/' + roomkey + '/teams/' + teamname + '/approve',
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        token: sessionStorage.getItem('token')
+                    },
+                    body: JSON.stringify({ teamname: teamname })
+                })
+        } else {
+            fetch('http://localhost:3000/games/' + roomkey + '/teams/' + teamname,
+                {
+                    method: 'delete',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        token: sessionStorage.getItem('token')
+                    },
+                    body: JSON.stringify({ teamname: teamname })
+                })
+                .then(() => dispatch(fetchTeams(roomkey)))
+        }
     }
 
 }
