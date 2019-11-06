@@ -1,13 +1,14 @@
 import { setWaitStatusAction, approveTeamAction } from '../reducers/application';
-import { startGameAction, getQuestion } from '../reducers/game';
+import { startGameAction, getQuestion, setNewQuestionAction, setAnswerAction } from '../reducers/game';
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
+export const REDUX_WEBSOCKET_CLOSED = 'REDUX_WEBSOCKET::CLOSED';
 
 const socketMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case REDUX_WEBSOCKET_MESSAGE:
                 const message = JSON.parse(action.payload.message).type;
-                console.log(action);
+
                 switch (message) {
                     case 'TEAMCHANGE':
                         store.dispatch(setWaitStatusAction(false));
@@ -26,10 +27,19 @@ const socketMiddleware = () => {
 
                         store.dispatch(getQuestion(questionId, roundNumber, questionNumber));
                         break;
+                    case 'QUESTIONCLOSED':
+                        store.dispatch(setNewQuestionAction(''));
+                        store.dispatch(setAnswerAction(''));
+                        break;
                     default:
                         break;
                 }
                 break;
+
+            // case REDUX_WEBSOCKET_CLOSED:
+            //     sessionStorage.clear()
+            //     window.location.href = '/' // Force refresh to remove state
+            //     break;
 
             default:
                 return next(action);

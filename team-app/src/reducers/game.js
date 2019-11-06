@@ -6,6 +6,7 @@ export const GAME_STARTED = 'GAME_STARTED';
 export const GET_QUESTION = 'GET_QUESTION';
 export const NEW_QUESTION = 'NEW_QUESTION';
 export const SET_ANSWER = 'SET_ANSWER';
+export const SET_SUBMIT_STATUS = 'SET_SUBMIT_STATUS';
 
 // ACTION CREATORS
 export const startGameAction = () => {
@@ -26,6 +27,10 @@ export const setAnswerAction = (value) => {
     return { type: SET_ANSWER, value }
 }
 
+export const setSubmitStatus = (status) => {
+    return { type: SET_SUBMIT_STATUS, status }
+}
+
 const initialState = {
     question: '',
     answer: '',
@@ -35,7 +40,8 @@ const initialState = {
     waitingForQuestionMsg: 'Waiting for the next question',
     waitingForStartMsg: 'Waiting for the game to start',
     roundNumber: 0,
-    questionNumber: 0
+    questionNumber: 0,
+    submitted: false
 }
 
 export const gameReducer = produce((draft = initialState, action) => {
@@ -58,6 +64,10 @@ export const gameReducer = produce((draft = initialState, action) => {
             draft.answer = action.value;
             break;
 
+        case SET_SUBMIT_STATUS:
+            draft.submitted = action.status;
+            break;
+
         default:
             return draft
     }
@@ -65,7 +75,6 @@ export const gameReducer = produce((draft = initialState, action) => {
 
 export const getQuestion = (questionId, roundNumber, questionNumber) => {
     return (dispatch) => {
-        // fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundNumber + '/askedquestions/' + questionNumber,
         fetch('http://localhost:3000/questions/' + questionId,
             {
                 headers: {
@@ -80,8 +89,6 @@ export const getQuestion = (questionId, roundNumber, questionNumber) => {
 export const submitAnswer = (event, roomkey, roundNumber, questionNumber, answer) => {
     event.preventDefault();
 
-    console.log(answer);
-
     return (dispatch) => {
         fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundNumber + '/askedquestions/' + questionNumber + '/answers',
             {
@@ -93,5 +100,6 @@ export const submitAnswer = (event, roomkey, roundNumber, questionNumber, answer
                 },
                 body: JSON.stringify({ answer: answer })
             })
+            .then(() => dispatch(setSubmitStatus(true)))
     }
 }
