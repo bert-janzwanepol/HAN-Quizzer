@@ -7,7 +7,7 @@ const askedQuestionsRouter = require('./askedQuestions')
 
 router.use('/:roundnumber', (req, res, next) => {
     req.roundnumber = req.params.roundnumber
-    game.rounds[req.roundnumber - 1] ? next() : next({ code: 'RESNOTFOUND' })
+    req.game.rounds[req.roundnumber - 1] ? next() : next({ code: 'RESNOTFOUND' })
 })
 
 router.use('/:roundnumber/askedquestions', askedQuestionsRouter)
