@@ -6,6 +6,8 @@ const router = express.Router()
 const askedQuestionsRouter = require('./askedQuestions')
 
 router.use('/:roundnumber', (req, res, next) => {
+    const game = req.game;
+
     req.roundnumber = req.params.roundnumber
     req.game.rounds[req.roundnumber - 1] ? next() : next({ code: 'RESNOTFOUND' })
 })
