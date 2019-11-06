@@ -94,7 +94,7 @@ const initialState = {
     selectedCategories: [],
     newRoundStarted: false,
     roundNumber: 1,
-    questionNumber: 1,
+    questionNumber: 0,
     questions: [],
     selectedQuestionIndex: 0,
     questionOpen: false,
@@ -326,7 +326,7 @@ export const closeQuestion = (roomkey, roundnumber, event, questionNumber) => {
     event.preventDefault();
 
     return (dispatch) => {
-        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/askedquestions/' + (questionNumber - 1) + '/close',
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/askedquestions/' + questionNumber + '/close',
             {
                 method: 'put',
                 headers: {
