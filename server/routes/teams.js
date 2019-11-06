@@ -27,6 +27,23 @@ router.get('/', (req, res) => {
     res.json({ teams: req.game.teams })
 })
 
+router.get('/standings', (req, res) => {
+    const game = req.game
+    const standing = []
+
+    game.teams.foreach(team => {
+        const teamStats = {
+            teamname: team.name,
+            totalRoundPoints: team.score,
+            answersCorrect: game.rounds.map(round => {
+                return round.questions.map(q => q.answers.find(a => a.teamName === team.name && correct === true))
+            })
+        }
+        standing.push(teamStats)
+    })
+    res.json(standing)
+})
+
 router.use(roleAuthentication.roleAuthentication('quizmaster'))
 
 router.delete('/:teamname', async (req, res) => {

@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
 router.get('/results', (req, res) => {
     res.json({
         answers: req.game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1].answers.map(a => {
-            return { teamName: a.teamName, correct: a.correct }
+            return { teamname: a.teamName, correct: a.correct }
         })
     })
 })
