@@ -37,6 +37,7 @@ export const authenticationReducer = produce((draft = initalState, action) => {
         case QUIZMASTER_KEY_DENIED:
             draft.errorMessage = action.message;
             break;
+
         default:
             return draft;
     }

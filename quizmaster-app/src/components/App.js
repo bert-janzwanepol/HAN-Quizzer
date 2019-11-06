@@ -9,6 +9,7 @@ import '../App.css';
 import SignupForm from './Signup';
 import TitleMessage from './TitleMessage';
 import GameDashboard from './GameDashboard';
+import QuestionDashboard from './QuestionDashboard'
 
 function App() {
     return (
@@ -21,7 +22,8 @@ function App() {
                             <SignupForm {...routeProps} />
                         </div>
                     }} />
-                    <Route path="/game" component={GameDashboard} />
+                    <Route exact path="/game" component={GameDashboard} />
+                    <Route exact path="/game/round" component={QuestionDashboard} />
                 </Switch>
             </div>
         </Router>
