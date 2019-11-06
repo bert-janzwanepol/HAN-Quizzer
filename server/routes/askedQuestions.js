@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     game.markModified('rounds')
     await game.save()
 
-    req.app.get('wss').broadcast({ type: 'QUESTIONASKED', roundNumber: req.roundnumber, questionNumber: game.rounds[req.roundnumber - 1].questions.length }, game.password, 'teams')
+    req.app.get('wss').broadcast({ type: 'QUESTIONASKED', questionId: req.body.questionId, roundNumber: game.rounds.length, questionNumber: game.rounds[req.roundnumber - 1].questions.length }, game.password, 'teams')
 
     res.sendStatus(201)
 })
