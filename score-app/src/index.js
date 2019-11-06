@@ -1,12 +1,50 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import thunk from 'redux-thunk';
+
+import * as Redux from 'redux';
+import * as ReactRedux from 'react-redux';
+import mainReducer from './reducers';
+
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import reduxWebsocket from '@giantmachines/redux-websocket';
+import socketMiddleware from './middleware/socket'
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv')
+dotenv.config();
+
+// send the first message on open to authenticate the websocket
+const websocketOptions = {
+    onOpen: (socket) => {
+        const token = jwt.sign({
+            role: 'scoreboard',
+            name: 'scoreboard',
+        }, 'bertjanenhendrikzijnfuckingcool10024')
+
+        sessionStorage.setItem('token', token);
+
+        let initMessage = {
+            initial: true,
+            password: theStore.getState().application.roomkey,
+            token: sessionStorage.getItem('token')
+        }
+
+        socket.send(JSON.stringify(initMessage))
+    }
+}
+const reduxWebsocketMiddleware = reduxWebsocket(websocketOptions);
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
+const theStore = Redux.createStore(mainReducer, composeEnhancers(
+    Redux.applyMiddleware(thunk, reduxWebsocketMiddleware, socketMiddleware)
+));
+
+const mainComponent =
+    <ReactRedux.Provider store={theStore}>
+        <App />
+    </ReactRedux.Provider>
+
+ReactDOM.render(mainComponent, document.getElementById('root'));
