@@ -56,8 +56,6 @@ router.get('/suggestions', async (req, res) => {
     res.json({ questions: questions })
 })
 
-
-
 router.put('/:questionNumber/close', async (req, res) => {
     const game = req.game
     game.rounds[req.roundnumber - 1].questions[questionNumber - 1].closed = true
