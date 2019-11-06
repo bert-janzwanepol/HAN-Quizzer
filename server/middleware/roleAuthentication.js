@@ -1,6 +1,6 @@
-exports.roleAuthentication = role => {
+exports.roleAuthentication = (...roles) => {
     return (req, res, next) => {
-        if (req.user.role !== role) {
+        if (!roles.includes(req.user.role)) {
             const err = { code: 'ROLEERR' }
             next(err)
         } else {

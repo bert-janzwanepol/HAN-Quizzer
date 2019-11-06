@@ -12,9 +12,10 @@ class TeamListUI extends Component {
         let tableRows
 
         if (this.props.standings.length > 0) {
-            tableRows = this.props.standings.map(team => {
+            tableRows = this.props.standings.map((team, i) => {
                 return (
                     <tr key={team.name + '-standing'}>
+                        <td>{'#' + (i + 1)}</td>
                         <td key={team.name}>
                             {team.teamname}
                         </td>
@@ -42,6 +43,7 @@ class TeamListUI extends Component {
                 <table>
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Teamnaam</th>
                             {this.props.standings.length > 0 ? this.props.standings[0].answersCorrect.map((a, i) => {
                                 return (

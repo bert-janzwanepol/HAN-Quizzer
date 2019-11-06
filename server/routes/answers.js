@@ -40,7 +40,7 @@ router.get('/results', (req, res) => {
     })
 })
 
-router.use(roleAuthentication.roleAuthentication('quizmaster'))
+router.use(roleAuthentication.roleAuthentication('quizmaster', 'scoreboard'))
 
 router.get('/', (req, res) => {
     res.json(

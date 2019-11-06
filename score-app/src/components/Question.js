@@ -9,7 +9,7 @@ class QuestionUI extends Component {
         console.log(this.props.question)
         return (
             <div>
-                <h2><i>{this.props.question.Category}</i></h2>
+                <h2><i>{this.props.question.category}</i></h2>
                 <h3>{this.props.question.question}</h3>
             </div>
         )

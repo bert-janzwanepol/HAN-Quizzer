@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 import TeamList from './TeamList'
 import Question from './Question'
+import Answers from './Answers';
 
 
 class ScoreboardUI extends Component {
@@ -11,6 +12,7 @@ class ScoreboardUI extends Component {
             <div>
                 <h1>Room key: {this.props.roomkey}</h1>
                 <Question />
+                <Answers />
                 <TeamList />
             </div>
         )
