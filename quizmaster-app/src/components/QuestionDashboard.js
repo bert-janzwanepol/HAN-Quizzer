@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 import { withRouter } from "react-router";
 
-import { fetchRoundQuestions, setRoundQuestionAction, openQuestion, getAnswers } from '../reducers/game';
+import { fetchRoundQuestions, setRoundQuestionAction, openQuestion, closeQuestion, nextQuestion } from '../reducers/game';
+import AnswerList from './AnswerList';
 
 class QuestionDashboardUI extends Component {
 
@@ -13,9 +14,10 @@ class QuestionDashboardUI extends Component {
     render() {
         let questionList = this.props.questions.map((question, index) => {
             let checked = index === this.props.selectedQuestionIndex ? 'checked' : false;
+
             return (
                 <div key={question._id}>
-                    <input type="radio" value={question._id} id={question._id} name={question._id} onChange={() => { this.props.selectQuestion(index) }} checked={checked} />
+                    <input type="radio" value={question._id} id={question._id} name={question._id} onChange={() => { this.props.selectQuestion(index, !this.props.questionOpen) }} checked={checked} />
                     <label htmlFor={question._id}>
                         {question.question} ({question.category})
                     </label>
@@ -30,11 +32,11 @@ class QuestionDashboardUI extends Component {
                     <h2>Kies de vraag voor deze ronde</h2>
                     <div>
                         {
+
                             this.props.questions.length !== 0
                                 ?
                                 <form>
                                     {questionList}
-
                                 </form>
                                 :
                                 <small>Loading questions...</small>
@@ -47,14 +49,32 @@ class QuestionDashboardUI extends Component {
                     </div>
 
                     <div className="button-group">
-                        <button onClick={(e) => this.props.openQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questions[this.props.selectedQuestionIndex]._id)}>Stellen</button>
-                        <button disabled>Sluiten</button>
-                        <button disabled>Volgende</button>
+                        <button
+                            disabled={this.props.questionOpen || this.props.answers[0] !== undefined}
+                            onClick={(e) => {
+                                this.props.openQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questions[this.props.selectedQuestionIndex]._id);
+                            }}
+                        >
+                            Stellen
+                        </button>
+                        <button
+                            disabled={!this.props.questionOpen}
+                            onClick={(e) => { this.props.closeQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questionNumber) }}
+                        >
+                            Sluiten
+                        </button>
+                        <button
+                            disabled={!this.props.questionOpen && this.props.answers[0] === undefined}
+                            onClick={(e) => { this.props.nextQuestion(this.props.roomkey, this.props.roundNumber, this.props.questionNumber, e) }}
+                        >
+                            Volgende
+                        </button>
                     </div>
                 </aside>
                 <main>
                     <div className="team-answers">
                         <h2>Antwoorden</h2>
+                        <AnswerList />
                     </div>
                 </main>
             </div>
@@ -67,16 +87,20 @@ const mapStateToProps = (state) => {
         questions: state.game.questions,
         roomkey: state.game.game.password,
         roundNumber: state.game.roundNumber,
-        selectedQuestionIndex: state.game.selectedQuestionIndex
+        questionNumber: state.game.questionNumber,
+        selectedQuestionIndex: state.game.selectedQuestionIndex,
+        questionOpen: state.game.questionOpen,
+        answers: state.game.answers
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getQuestions: (roomkey, roundnumber) => dispatch(fetchRoundQuestions(roomkey, roundnumber)),
-        selectQuestion: (id) => dispatch(setRoundQuestionAction(id)),
+        selectQuestion: (id, isClosed) => dispatch(setRoundQuestionAction(id, isClosed)),
         openQuestion: (roomkey, roundnumber, event, questionId) => dispatch(openQuestion(roomkey, roundnumber, event, questionId)),
-        getAnswers: () => { dispatch(getAnswers()) }
+        closeQuestion: (roomkey, roundnumber, event, questionId) => dispatch(closeQuestion(roomkey, roundnumber, event, questionId)),
+        nextQuestion: (roomkey, roundnumber, questionNumber, event) => dispatch(nextQuestion(roomkey, roundnumber, questionNumber, event))
     }
 }
 

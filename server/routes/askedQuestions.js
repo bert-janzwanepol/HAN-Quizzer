@@ -58,7 +58,7 @@ router.get('/suggestions', async (req, res) => {
 
 router.put('/:questionNumber/close', async (req, res) => {
     const game = req.game
-    game.rounds[req.roundnumber - 1].questions[questionNumber - 1].closed = true
+    game.rounds[req.roundnumber - 1].questions[req.params.questionNumber - 1].closed = true
 
     game.markModified('rounds')
     await game.save()
