@@ -17,7 +17,7 @@ export const CLOSE_QUESTION = 'CLOSE_QUESTION';
 export const OPEN_QUESTION = 'OPEN_QUESTION';
 export const NEW_STANDINGS = 'NEW_STANDINGS';
 
-export const fetchTeamsAction = (json) => {
+export const setTeamsAction = (json) => {
     return {
         type: TEAMS_RECEIVED,
         json
@@ -31,8 +31,8 @@ export const setStandingsAction = (standings) => {
     }
 }
 
-export const setNewQuestionAction = (question, roundNumber, questionNumber, questionId) => {
-    return { type: NEW_QUESTION, question, roundNumber, questionNumber, questionId }
+export const setQuestionAction = (question) => {
+    return { type: NEW_QUESTION, question }
 }
 
 export const closeQuestion = () => {
@@ -47,23 +47,21 @@ export const openQuestion = () => {
 export const scoreReducer = produce((draft = initialState, action) => {
     switch (action.type) {
         case TEAMS_RECEIVED:
-            draft.teams = action.json;
-            return draft;
+            draft.teams = action.json
+            return draft
 
         case NEW_QUESTION:
-            draft.question = action.question;
-            draft.questionId = action.questionId;
-            draft.roundNumber = action.roundNumber;
-            draft.questionNumber = action.questionNumber;
-            break;
+            draft.questionNumber++
+            draft.question = action.question
+            return draft
 
         case OPEN_QUESTION:
-            draft.questionClosed = false;
-            break;
+            draft.questionClosed = false
+            return draft
 
         case CLOSE_QUESTION:
-            draft.questionClosed = true;
-            break;
+            draft.questionClosed = true
+            return draft
 
         case NEW_STANDINGS:
             draft.standings = action.standings
@@ -75,7 +73,6 @@ export const scoreReducer = produce((draft = initialState, action) => {
 })
 
 export const fetchTeams = (roomkey) => {
-
     return (dispatch) => {
         fetch('http://localhost:3000/games/' + roomkey + '/teams',
             {
@@ -85,40 +82,13 @@ export const fetchTeams = (roomkey) => {
             })
             .then(res => res.json())
             .then(json => {
-                dispatch(fetchTeamsAction(json.teams))
+                dispatch(setTeamsAction(json.teams))
             });
     }
 
 }
 
-// export const getQuestion = (questionId, roundNumber, questionNumber) => {
-//     return (dispatch) => {
-//         fetch('http://localhost:3000/questions/' + questionId,
-//             {
-//                 headers: {
-//                     token: sessionStorage.getItem('token')
-//                 }
-//             })
-//             .then(res => res.json())
-//             .then(json => {
-//                 dispatch(setNewQuestionAction(json, roundNumber, questionNumber, questionId))
-//                 dispatch(openQuestion())
-//             })
-//     }
-// }
-
-export const getStandings = (roomkey) => {
-    return (dispatch) => {
-        fetch('http://localhost:3000/games/' + roomkey + '/teams/standings', {
-            headers: {
-                token: sessionStorage.getItem('token')
-            }
-        }).then(res => res.json())
-            .then(json => dispatch(setStandingsAction(json)))
-    }
-}
-
-export const getQuestion = (questionId, roundNumber, questionNumber) => {
+export const getQuestion = (questionId) => {
     return (dispatch) => {
         fetch('http://localhost:3000/questions/' + questionId,
             {
@@ -127,6 +97,20 @@ export const getQuestion = (questionId, roundNumber, questionNumber) => {
                 }
             })
             .then(res => res.json())
+            .then(question => {
+                dispatch(setQuestionAction(question))
+                dispatch(openQuestion())
+            })
+    }
+}
 
+export const getStandings = (roomkey) => {
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/teams/standings', {
+            headers: {
+                token: sessionStorage.getItem('token')
+            }
+        }).then(res => res.json())
+            .then(standings => dispatch(setStandingsAction(standings)))
     }
 }

@@ -23,11 +23,10 @@ const socketMiddleware = () => {
                     case 'QUESTIONASKED':
                         let payload = JSON.parse(action.payload.message)
                         let questionId = payload.questionId;
-                        let roundNumber = payload.roundNumber;
-                        let questionNumber = payload.questionNumber;
 
-                        store.dispatch(getQuestion(questionId, roundNumber, questionNumber));
+                        store.dispatch(getQuestion(questionId));
                         break;
+
                     case 'QUESTIONCLOSED':
                         store.dispatch(closeQuestion());
                         break;

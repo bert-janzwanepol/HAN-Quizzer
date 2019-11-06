@@ -10,7 +10,6 @@ class ScoreboardUI extends Component {
         return (
             <div>
                 <h1>Room key: {this.props.roomkey}</h1>
-                <h2>Huidige vraag:</h2>
                 <Question />
                 <TeamList />
             </div>

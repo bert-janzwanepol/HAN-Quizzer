@@ -20,10 +20,7 @@ router.get('/suggestions', async (req, res) => {
 })
 
 router.use('/:questionnumber', (req, res, next) => {
-    const game = req.game;
-
     req.questionNumber = req.params.questionnumber
-    req.game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1] ? console.log('im in /roundnumber') : console.log('eeeeeeeeh')
     req.game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1] ? next() : next({ code: 'RESNOTFOUND' })
 })
 
@@ -54,8 +51,7 @@ router.post('/', async (req, res) => {
     game.markModified('rounds')
     await game.save()
 
-    req.app.get('wss').broadcast({ type: 'QUESTIONASKED', questionId: req.body.questionId, roundNumber: game.rounds.length, questionNumber: game.rounds[req.roundnumber - 1].questions.length }, game.password, 'teams')
-    req.app.get('wss').broadcast({ type: 'QUESTIONASKED', questionId: req.body.questionId, roundNumber: game.rounds.length, questionNumber: game.rounds[req.roundnumber - 1].questions.length }, game.password, 'scoreboard')
+    req.app.get('wss').broadcast({ type: 'QUESTIONASKED', questionId: req.body.questionId }, game.password, 'teams', 'scoreboard')
     res.sendStatus(201)
 })
 

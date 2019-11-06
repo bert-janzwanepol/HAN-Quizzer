@@ -35,15 +35,15 @@ export const applicationReducer = produce((draft = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCES:
             draft.authenticated = true;
-            return draft;
+            return draft
 
         case LOGIN_ERROR:
             draft.errorMessage = action.error
-            break;
+            return draft
 
         case SET_ROOM_KEY:
             draft.roomkey = action.password
-            break;
+            return draft
 
         default:
             return draft

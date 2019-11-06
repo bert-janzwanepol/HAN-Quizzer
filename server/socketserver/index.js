@@ -36,9 +36,9 @@ exports.createServer = (httpServer) => {
     wss.broadcast = (message, gamepassword, ...recipients) => {
         const game = games.find(g => g.password === gamepassword)
         if (game) {
-            if (recipients.includes('quizmaster')) sendJSON(message, game.quizmaster)
+            if (recipients.includes('quizmaster')) game.quizmaster ? sendJSON(message, game.quizmaster) : null
             if (recipients.includes('teams')) game.teams.forEach(team => sendJSON(message, team))
-            if (recipients.includes('scoreboard')) sendJSON(message, game.scoreboard)
+            if (recipients.includes('scoreboard')) game.scoreboard ? sendJSON(message, game.scoreboard) : null
         }
     }
 

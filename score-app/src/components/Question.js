@@ -5,22 +5,13 @@ import { getQuestion } from '../reducers/score'
 
 class QuestionUI extends Component {
 
-    componentDidMount() {
-        this.props.getQuestion(this.props.questionId, this.props.roundNumber, this.props.roundNumber)
-    }
-
     render() {
+        console.log(this.props.question)
         return (
             <div>
-                {
-                    this.props.question.question
-                }
-                <div>
-                    {(this.props.questionClosed === true) ? this.props.question.question : ''}
-                </div>
+                <h2><i>{this.props.question.Category}</i></h2>
+                <h3>{this.props.question.question}</h3>
             </div>
-
-
         )
     }
 
@@ -29,7 +20,6 @@ class QuestionUI extends Component {
 const mapStateToProps = (state) => {
     return {
         question: state.score.question,
-        questionId: state.score.questionId,
         roundNumber: state.score.roundNumber,
         questionNumber: state.score.questionNumber,
         questionClosed: state.score.questionClosed
@@ -38,7 +28,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getQuestion: (questionId, roundNumber, questionNumber) => dispatch(getQuestion(questionId, roundNumber, questionNumber)),
+        getQuestion: (questionId) => dispatch(getQuestion(questionId))
     }
 }
 
