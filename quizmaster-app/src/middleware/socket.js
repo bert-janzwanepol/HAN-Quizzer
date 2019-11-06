@@ -15,8 +15,13 @@ const socketMiddleware = () => {
                     case 'STARTGAME':
                         store.dispatch(newRoundStartAction(true));
                         break;
+
                     case 'NEWANSWER':
-                        // store.dispatch(getAnswers(store.getState().game.game.password, ));
+                        let { roundNumber, questionNumber } = store.getState().game;
+                        let { password } = store.getState().game.game;
+
+                        // console.log(store.getState().game.game);
+                        store.dispatch(getAnswers(password, roundNumber, questionNumber));
                         break;
 
                     default:

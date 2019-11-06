@@ -227,6 +227,10 @@ input[type=radio]:checked + label {
   /* align-self: flex-start; */
 }
 
+button:disabled {
+  background-color: lightgrey;
+}
+
 main {
   flex-grow: 1;
   /* height: 100%; */

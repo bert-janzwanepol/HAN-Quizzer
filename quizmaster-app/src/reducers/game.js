@@ -14,9 +14,11 @@ export const QUESTION_DESELECTED = 'QUESTION_DESELECTED';
 export const QUESTION_STARTED = 'QUESTION_STARTED';
 export const QUESTION_STOPPED = 'QUESTION_STOPPED';
 
+export const ROUND_OPEN = 'ROUND_OPEN';
+export const ANSWERS_RECEIVED = 'ANSWERS_RECEIVED';
+
 export const FETCH_TEAMS = 'FETCH_TEAMS';
 export const SET_TEAM_STATUS = 'SET_TEAM_STATUS';
-export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 
 export const createGameAction = (game) => {
     return { type: CREATE_GAME, game }
@@ -50,8 +52,20 @@ export const getRoundQuestionsAction = (questions) => {
     return { type: QUESTIONS_RECEIVED, questions }
 }
 
-export const setRoundQuestionAction = (question) => {
-    return { type: QUESTION_SELECTED, question }
+export const setRoundQuestionAction = (question, questionOpen) => {
+    return { type: QUESTION_SELECTED, question, questionOpen }
+}
+
+export const setRoundOpenAction = () => {
+    return { type: QUESTION_STARTED }
+}
+
+export const setRoundCloseAction = () => {
+    return { type: QUESTION_STOPPED }
+}
+
+export const getAnswerAction = (json) => {
+    return { type: ANSWERS_RECEIVED, json }
 }
 
 const initialState = {
@@ -60,8 +74,11 @@ const initialState = {
     selectedCategories: [],
     newRoundStarted: false,
     roundNumber: 0,
+    questionNumber: 0,
     questions: [],
-    selectedQuestionIndex: 0
+    selectedQuestionIndex: 0,
+    questionOpen: false,
+    answers: []
 }
 
 export const gameReducer = produce((draft = initialState, action) => {
@@ -83,7 +100,7 @@ export const gameReducer = produce((draft = initialState, action) => {
             break;
 
         case QUESTION_SELECTED:
-            draft.selectedQuestionIndex = action.question
+            draft.selectedQuestionIndex = action.questionOpen ? action.question : draft.selectedQuestionIndex
             break
 
         case FETCH_TEAMS:
@@ -101,10 +118,22 @@ export const gameReducer = produce((draft = initialState, action) => {
             draft.roundNumber++;
             break;
 
+        case QUESTION_STARTED:
+            draft.questionOpen = true;
+            draft.questionNumber++;
+            break;
+
+        case QUESTION_STOPPED:
+            draft.questionOpen = false;
+            break;
+
         case QUESTIONS_RECEIVED:
             draft.questions = action.questions
             break;
 
+        case ANSWERS_RECEIVED:
+            draft.answers = action.json;
+            break;
         default:
             return draft;
     }
@@ -219,7 +248,10 @@ export const fetchRoundQuestions = (roomkey, roundnumber) => {
                 },
             })
             .then(res => res.json())
-            .then(json => dispatch(getRoundQuestionsAction(json.questions)))
+            .then(json => {
+                console.log(json)
+                dispatch(getRoundQuestionsAction(json.questions))
+            })
     }
 }
 
@@ -237,18 +269,76 @@ export const openQuestion = (roomkey, roundnumber, event, questionId) => {
                 },
                 body: JSON.stringify({ questionId: questionId })
             })
+            .then(() => dispatch(setRoundOpenAction()))
     }
 }
 
-export const getAnswers = (roomkey, roundnumber) => {
+export const closeQuestion = (roomkey, roundnumber, event, questionNumber) => {
+    event.preventDefault();
 
     return (dispatch) => {
-        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/askedquestions',
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/askedquestions/' + questionNumber + '/close',
             {
-                method: 'get',
+                method: 'put',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                    token: sessionStorage.getItem('token')
+                },
+            })
+            .then(() => dispatch(setRoundCloseAction()))
+    }
+}
+
+export const nextQuestion = (roomkey, roundnumber, questionNumber, event) => {
+    event.preventDefault();
+
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/askedquestions/' + questionNumber + '/next',
+            {
+                method: 'put',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                    token: sessionStorage.getItem('token')
+                },
+            })
+            .then(() => {
+                dispatch(getAnswerAction([]))
+                dispatch(fetchRoundQuestions(roomkey, roundnumber))
+            })
+    }
+}
+
+export const getAnswers = (roomkey, roundNumber, questionNumber) => {
+
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundNumber + '/askedquestions/' + questionNumber + '/answers',
+            {
                 headers: {
                     token: sessionStorage.getItem('token')
                 }
             })
+            .then(res => res.json())
+            .then(json => dispatch(getAnswerAction(json)))
+    }
+}
+
+export const approveAnswer = (correct, teamname, roomkey, roundNumber, questionNumber) => {
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundNumber + '/askedquestions/' + questionNumber + '/answers',
+            {
+                method: 'put',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                    token: sessionStorage.getItem('token')
+                },
+                body: JSON.stringify({
+                    correct: correct,
+                    teamname: teamname
+                })
+            })
+            .then(() => dispatch(getAnswers(roomkey, roundNumber, questionNumber)))
     }
 }
