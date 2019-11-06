@@ -10,15 +10,6 @@ const AskedQuestion = mongoose.model('AskedQuestion')
 
 const answersRouter = require('./answers')
 
-router.get('/suggestions', async (req, res) => {
-    const game = req.game
-    const askedQuestions = game.rounds.map(round => round.questions.id)
-    const round = game.rounds[req.roundnumber - 1]
-    const questions = await Promise.all(round.categories.map(c => Question.getRandom(c, askedQuestions)))
-
-    res.json({ questions: questions })
-})
-
 router.use('/:questionnumber', (req, res, next) => {
     const game = req.game;
 
@@ -56,6 +47,15 @@ router.post('/', async (req, res) => {
     req.app.get('wss').broadcast({ type: 'QUESTIONASKED', questionId: req.body.questionId, roundNumber: game.rounds.length, questionNumber: game.rounds[req.roundnumber - 1].questions.length }, game.password, 'teams')
     req.app.get('wss').broadcast({ type: 'QUESTIONASKED', questionId: req.body.questionId, roundNumber: game.rounds.length, questionNumber: game.rounds[req.roundnumber - 1].questions.length }, game.password, 'scoreboard')
     res.sendStatus(201)
+})
+
+router.get('/suggestions', async (req, res) => {
+    const game = req.game
+    const askedQuestions = game.rounds.map(round => round.questions.id)
+    const round = game.rounds[req.roundnumber - 1]
+    const questions = await Promise.all(round.categories.map(c => Question.getRandom(c, askedQuestions)))
+
+    res.json({ questions: questions })
 })
 
 router.put('/:questionNumber/close', async (req, res) => {
