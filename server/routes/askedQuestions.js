@@ -23,7 +23,7 @@ router.use('/:questionnumber', (req, res, next) => {
     const game = req.game;
 
     req.questionNumber = req.params.questionnumber
-    game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1] ? next() : next({ code: 'RESNOTFOUND' })
+    req.game.rounds[req.roundnumber - 1].questions[req.questionNumber - 1] ? next() : next({ code: 'RESNOTFOUND' })
 })
 
 router.use('/:questionnumber/answers', answersRouter)
