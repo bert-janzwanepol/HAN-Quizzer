@@ -23,12 +23,12 @@ router.put('/:roundnumber/categories', async (req, res) => {
     game.markModified('rounds')
     game.save()
 
+    req.app.get('wss').broadcast({ type: 'STARTROUND' }, req.game.password, 'quizmaster', 'teams')
     res.sendStatus(200)
 })
 
 router.post('/', (req, res) => {
     req.game.startNewRound()
-    req.app.get('wss').broadcast({ type: 'STARTROUND' }, req.game.password, 'quizmaster', 'teams')
     res.sendStatus(200)
 })
 

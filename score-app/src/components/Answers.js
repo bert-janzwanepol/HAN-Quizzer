@@ -25,7 +25,7 @@ class AnswersUI extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        question: state.score.question
+        answers: state.score.answers
     }
 }
 
