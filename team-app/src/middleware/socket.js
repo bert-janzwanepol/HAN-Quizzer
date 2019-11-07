@@ -25,6 +25,7 @@ const socketMiddleware = () => {
 
                         store.dispatch(getQuestion(questionId));
                         break;
+
                     case 'QUESTIONCLOSED':
                         store.dispatch(setNewQuestionAction(''));
                         store.dispatch(setAnswerAction(''));

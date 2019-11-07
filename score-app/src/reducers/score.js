@@ -116,12 +116,12 @@ export const getStandings = (roomkey) => {
 }
 
 export const closeQuestion = () => {
-    return (dispatch) => {
-        fetch('http://localhost:3000/games/' + roomkey + '/teams/standings', {
-            headers: {
-                token: sessionStorage.getItem('token')
-            }
-        }).then(res => res.json())
-            .then(standings => dispatch(setStandingsAction(standings)))
-    }
+    // return (dispatch) => {
+    //     fetch('http://localhost:3000/games/' + roomkey + '/teams/standings', {
+    //         headers: {
+    //             token: sessionStorage.getItem('token')
+    //         }
+    //     }).then(res => res.json())
+    //         .then(standings => dispatch(setStandingsAction(standings)))
+    // }
 }

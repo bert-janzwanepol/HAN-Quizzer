@@ -17,12 +17,8 @@ import AnswerList from './AnswerList';
 
 class QuestionDashboardUI extends Component {
 
-    componentDidMount() {
-        this.props.getQuestions(this.props.roomkey, this.props.roundNumber);
-    }
-
     render() {
-        let questionList = this.props.questions.map((question, index) => {
+        let questionList = this.props.questions && this.props.questions.map((question, index) => {
             let checked = index === this.props.selectedQuestionIndex ? 'checked' : false;
 
             return (
@@ -43,10 +39,10 @@ class QuestionDashboardUI extends Component {
                     <div>
                         {
 
-                            this.props.questions.length !== 0
+                            this.props.questions
                                 ?
                                 <form>
-                                    {questionList}
+                                    {this.props.questions !== undefined && questionList}
                                 </form>
                                 :
                                 <small>Loading questions...</small>
@@ -55,7 +51,7 @@ class QuestionDashboardUI extends Component {
 
                     <div>
                         <h2>Juiste antwoord</h2>
-                        {this.props.questions.length !== 0 && this.props.questions[this.props.selectedQuestionIndex].answer}
+                        {this.props.questions.length > 0 ? this.props.questions[this.props.selectedQuestionIndex].answer : ''}
                     </div>
 
                     {
