@@ -9,7 +9,7 @@ class AnswerListUI extends Component {
         const answerList = this.props.answers[0] !== undefined && this.props.answers.map(answer => {
             return (
                 <li key={answer.teamName}>
-                    {answer.answer} - {answer.teamName}
+                    <strong>{answer.answer}</strong>: {answer.teamName}
 
                     {/* repeat conditional render so we don't need a wrapping jsx element */}
                     {

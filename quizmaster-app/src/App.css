@@ -122,7 +122,8 @@ button:disabled {
   align-items: center;
 }
 
-.category-list input[type=checkbox] {
+.category-list input[type=checkbox],
+input[type=radio] {
   background: none;
   border: 1px solid white;
   -webkit-appearance: none;
@@ -131,7 +132,8 @@ button:disabled {
   margin: 0 0.25rem 0 0;
 }
 
-.category-list input[type=checkbox]:checked {
+.category-list input[type=checkbox]:checked,
+input[type=radio]:checked {
   background-color: white;
   outline: 3px solid #1d1d1d;
   outline-offset: -4px;
@@ -140,6 +142,11 @@ button:disabled {
 .category-list button {
   align-self: flex-start;
   margin-top: 1rem;
+}
+
+.question-list-item {
+  display: flex;
+  align-items: center;
 }
 
 .button-group {

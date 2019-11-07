@@ -9,7 +9,7 @@ html {
 }
 
 .app {
-    background-color: rgb(45, 45, 45);
+    background-color: #1d1d1d;
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -37,12 +37,16 @@ input, button {
 }
 
 button {
-    align-self: center;
-    border: none;
-    border-radius: 50px;
-    background-color: rgb(1, 144, 245);
-    color: inherit;
-    width: 16rem;
+  align-self: center;
+  border: none;
+  color: white;
+  background-color: #df001c;
+  font-size: 20px;
+  padding: 0.5rem 2rem;
+}
+
+form button {
+  width: 100%;
 }
 
 .form-error-message {
