@@ -275,15 +275,25 @@ export const setRoundCategories = (roomkey, roundnumber, event, categories) => {
     event.preventDefault();
 
     return (dispatch) => {
-        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/categories',
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/',
             {
-                method: 'put',
+                method: 'post',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': 'application/json',
                     token: sessionStorage.getItem('token')
-                },
-                body: JSON.stringify({ categories: categories })
+                }
+            }).then(() => {
+                return fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundnumber + '/categories',
+                    {
+                        method: 'put',
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json',
+                            token: sessionStorage.getItem('token')
+                        },
+                        body: JSON.stringify({ categories: categories })
+                    })
             })
     }
 }
@@ -298,7 +308,7 @@ export const fetchRoundQuestions = (roomkey, roundnumber) => {
             })
             .then(res => res.json())
             .then(json => {
-                console.log(json)
+                console.log(json.questions)
                 dispatch(getRoundQuestionsAction(json.questions))
             })
     }

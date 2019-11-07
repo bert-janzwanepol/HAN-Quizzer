@@ -1,4 +1,4 @@
-import { fetchTeams, newRoundStartAction, getAnswers } from '../reducers/game'
+import { fetchTeams, newRoundStartAction, getAnswers, fetchRoundQuestions } from '../reducers/game'
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 export const REDUX_WEBSOCKET_CLOSED = 'REDUX_WEBSOCKET::CLOSED';
 
@@ -18,10 +18,18 @@ const socketMiddleware = () => {
                         break;
 
                     case 'NEWANSWER':
-                        let { roundNumber, questionNumber } = store.getState().game;
-                        let { password } = store.getState().game.game;
+                        const { roundNumber, questionNumber } = store.getState().game;
+                        const { password } = store.getState().game.game;
 
                         store.dispatch(getAnswers(password, roundNumber, questionNumber));
+                        break;
+
+                    case 'STARTROUND':
+                        const questionNr = store.getState().game.roundNumber;
+                        const pw = store.getState().game.game.password;
+                        console.log(pw, questionNr);
+
+                        store.dispatch(fetchRoundQuestions(pw, questionNr));
                         break;
                     default:
                         break;
