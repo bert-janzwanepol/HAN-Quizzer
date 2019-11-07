@@ -63,7 +63,7 @@ export const gameReducer = produce((draft = initialState, action) => {
 
         case NEW_QUESTION:
             draft.question = action.question;
-            draft.questionNumber++;
+            if (action.question !== '') draft.questionNumber++;
             break;
 
         case SET_ANSWER:

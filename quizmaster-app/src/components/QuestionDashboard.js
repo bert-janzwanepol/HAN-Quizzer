@@ -11,6 +11,7 @@ import {
     nextQuestion,
     resetSelectedCategoriesAction,
     resetQuestionNumberAction,
+    toggleNextDisabled,
     setRoundNumber,
     stopGame
 } from '../reducers/game';
@@ -59,7 +60,7 @@ class QuestionDashboardUI extends Component {
                         (this.props.questionNumber <= 11 || (this.props.questionNumber === 12 && this.props.questionOpen === true)) &&
                         <div className="button-group">
                             <button
-                                disabled={this.props.questions[0] === undefined || (this.props.questionOpen === true) || (this.props.answers[0] !== undefined && this.props.questionOpen === false)}
+                                disabled={this.props.questions[0] === undefined || (this.props.questionOpen === true) || (this.props.answers[0] !== undefined && this.props.questionOpen === false) || !this.props.nextDisabled}
                                 onClick={(e) => {
                                     this.props.openQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questions[this.props.selectedQuestionIndex]._id);
                                 }}
@@ -68,21 +69,24 @@ class QuestionDashboardUI extends Component {
                                 </button>
                             <button
                                 disabled={!this.props.questionOpen}
-                                onClick={(e) => { this.props.closeQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questionNumber) }}
+                                onClick={(e) => {
+                                    this.props.closeQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questionNumber)
+                                    this.props.toggleNextDisabled();
+                                }}
                             >
                                 Sluiten
                             </button>
 
-                            {/* The next question button renders when it's not round one and the round is closed */}
-                            {
-                                (this.props.questionNumber > 0 && this.props.questionOpen === false) &&
-                                <button
-                                    disabled={this.props.questionNumber === 0 && this.props.questionOpen === true && this.props.answers[0] !== undefined}
-                                    onClick={(e) => { this.props.nextQuestion(this.props.roomkey, this.props.roundNumber, this.props.questionNumber, e) }}
-                                >
-                                    Volgende
+
+                            <button
+                                disabled={this.props.nextDisabled}
+                                onClick={(e) => {
+                                    this.props.toggleNextDisabled();
+                                    this.props.nextQuestion(this.props.roomkey, this.props.roundNumber, this.props.questionNumber, e);
+                                }}
+                            >
+                                Volgende
                             </button>
-                            }
                         </div>
                     }
 
@@ -128,7 +132,8 @@ const mapStateToProps = (state) => {
         questionNumber: state.game.questionNumber,
         selectedQuestionIndex: state.game.selectedQuestionIndex,
         questionOpen: state.game.questionOpen,
-        answers: state.game.answers
+        answers: state.game.answers,
+        nextDisabled: state.game.nextDisabled
     }
 }
 
@@ -145,7 +150,8 @@ const mapDispatchToProps = (dispatch) => {
         resetCategories: () => dispatch(resetSelectedCategoriesAction()),
         resetQuestionNumber: () => dispatch(resetQuestionNumberAction()),
         setRoundNumber: (number) => dispatch(setRoundNumber(number)),
-        stopGame: (roomkey, e) => dispatch(stopGame(roomkey, e))
+        stopGame: (roomkey, e) => dispatch(stopGame(roomkey, e)),
+        toggleNextDisabled: () => dispatch(toggleNextDisabled())
     }
 }
 

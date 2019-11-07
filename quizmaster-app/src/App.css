@@ -145,3 +145,17 @@ button:disabled {
 .button-group {
   margin-top: 1rem;
 }
+
+.team-answers ul {
+  padding: 0;
+  width: 50%;
+}
+
+.team-answers li {
+  display: flex;;
+}
+
+.inactive.accept,
+.inactive.reject {
+  background-color: #8D99AE;
+}

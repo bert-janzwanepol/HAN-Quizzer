@@ -13,6 +13,7 @@ export const QUESTION_SELECTED = 'QUESTION_SELECTED';
 export const QUESTION_DESELECTED = 'QUESTION_DESELECTED';
 export const QUESTION_STARTED = 'QUESTION_STARTED';
 export const QUESTION_STOPPED = 'QUESTION_STOPPED';
+export const TOGGLE_NEXT_DISABLED = 'TOGGLE_NEXT_DISABLED';
 
 export const ROUND_OPEN = 'ROUND_OPEN';
 export const SET_ROUND_NUMBER = 'SET_ROUND_NUMBER';
@@ -90,6 +91,10 @@ export const setRoundNumber = (number) => {
     return { type: SET_ROUND_NUMBER }
 }
 
+export const toggleNextDisabled = () => {
+    return { type: TOGGLE_NEXT_DISABLED }
+}
+
 const initialState = {
     game: [],
     categories: [],
@@ -100,7 +105,8 @@ const initialState = {
     questions: [],
     selectedQuestionIndex: 0,
     questionOpen: false,
-    answers: []
+    answers: [],
+    nextDisabled: true
 }
 
 export const gameReducer = produce((draft = initialState, action) => {
@@ -171,6 +177,11 @@ export const gameReducer = produce((draft = initialState, action) => {
         case ANSWERS_RECEIVED:
             draft.answers = action.json;
             break;
+
+        case TOGGLE_NEXT_DISABLED:
+            draft.nextDisabled = !draft.nextDisabled;
+            break;
+
         default:
             return draft;
     }
