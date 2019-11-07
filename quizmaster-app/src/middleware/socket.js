@@ -1,4 +1,4 @@
-import { fetchTeams, newRoundStartAction, getAnswers, fetchRoundQuestions } from '../reducers/game'
+import { fetchTeams, newRoundStartAction, getAnswers, fetchRoundQuestions, toggleNextDisabled, } from '../reducers/game'
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 export const REDUX_WEBSOCKET_CLOSED = 'REDUX_WEBSOCKET::CLOSED';
 
@@ -27,7 +27,7 @@ const socketMiddleware = () => {
                     case 'STARTROUND':
                         const questionNr = store.getState().game.roundNumber;
                         const pw = store.getState().game.game.password;
-
+                        store.dispatch(toggleNextDisabled());
                         store.dispatch(fetchRoundQuestions(pw, questionNr));
                         break;
                     case 'CLOSEGAME':

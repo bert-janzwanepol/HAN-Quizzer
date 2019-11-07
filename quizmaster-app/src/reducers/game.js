@@ -106,7 +106,7 @@ const initialState = {
     selectedQuestionIndex: 0,
     questionOpen: false,
     answers: [],
-    nextDisabled: true
+    nextDisabled: false
 }
 
 export const gameReducer = produce((draft = initialState, action) => {
