@@ -3,19 +3,22 @@ import * as ReactRedux from 'react-redux';
 import TeamList from './TeamList'
 import Question from './Question'
 import Answers from './Answers';
+import { stat } from 'fs';
 
 
 class ScoreboardUI extends Component {
 
     render() {
-        return (
+        let content = this.props.closed ?
+            <h1>Winner is {winner.teamname}</h1>
+            :
             <div>
                 <h1>Room key: {this.props.roomkey}</h1>
                 <Question />
                 <Answers />
                 <TeamList />
             </div>
-        )
+        return content
     }
 
 
@@ -28,7 +31,9 @@ const mapStateToProps = (state) => {
         question: state.score.question,
         answer: state.score.answer,
         team: state.score.teams,
-        roomkey: state.application.roomkey
+        roomkey: state.application.roomkey,
+        closed: state.score.gameclosed,
+        winner: state.score.standings[0]
     }
 }
 

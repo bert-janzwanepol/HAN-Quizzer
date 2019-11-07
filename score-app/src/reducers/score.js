@@ -9,7 +9,8 @@ const initialState = {
     answer: '',
     teams: [],
     standings: [],
-    answers: []
+    answers: [],
+    gameclosed: false
 }
 
 export const TEAMS_RECEIVED = 'TEAMS_RECEIVED';
@@ -18,11 +19,18 @@ export const CLOSE_QUESTION = 'CLOSE_QUESTION';
 export const OPEN_QUESTION = 'OPEN_QUESTION';
 export const NEW_STANDINGS = 'NEW_STANDINGS';
 export const NEW_ROUND = 'NEW_ROUND'
+export const CLOSE_GAME = 'CLOSE_GAME'
 
 export const setTeamsAction = (json) => {
     return {
         type: TEAMS_RECEIVED,
         json
+    }
+}
+
+export const closeGameAction = () => {
+    return {
+        type: CLOSE_GAME
     }
 }
 
@@ -79,6 +87,10 @@ export const scoreReducer = produce((draft = initialState, action) => {
 
         case NEW_STANDINGS:
             draft.standings = action.standings
+            return draft
+
+        case CLOSE_GAME:
+            draft.gameclosed = true
             return draft
 
         default:

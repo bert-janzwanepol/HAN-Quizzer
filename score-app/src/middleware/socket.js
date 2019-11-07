@@ -1,4 +1,4 @@
-import { getStandings, fetchTeams, getQuestion, closeQuestion, startRoundAction, getAnswers } from '../reducers/score';
+import { getStandings, fetchTeams, getQuestion, closeQuestion, startRoundAction, getAnswers, closeGameAction } from '../reducers/score';
 
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 export const REDUX_WEBSOCKET_CLOSED = 'REDUX_WEBSOCKET::CLOSED';
@@ -21,6 +21,11 @@ const socketMiddleware = () => {
 
                     case 'NEWSTANDINGS':
                     case 'ROUNDCLOSED':
+                        store.dispatch(getStandings(store.getState().application.roomkey))
+                        break;
+
+                    case 'CLOSEGAME':
+                        store.dispatch(closeGameAction())
                         store.dispatch(getStandings(store.getState().application.roomkey))
                         break;
 
