@@ -21,7 +21,7 @@ class TeamListUI extends Component {
                         </td>
                         {team.answersCorrect.map(a => <td key={team.name + '-standing'}> {a}/12 </td>)}
                         <td key={team.score}>
-                            {team.totalRoundPoints}
+                            {team.score}
                         </td>
                     </tr>
                 )
