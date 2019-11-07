@@ -59,6 +59,7 @@ export const scoreReducer = produce((draft = initialState, action) => {
             return draft
 
         case NEW_QUESTION:
+            draft.answers = []
             draft.questionNumber++
             draft.question = action.question
             return draft
@@ -68,7 +69,6 @@ export const scoreReducer = produce((draft = initialState, action) => {
             return draft
 
         case CLOSE_QUESTION:
-            console.log(action.answers)
             draft.answers = action.answers
             draft.questionClosed = true
             return draft

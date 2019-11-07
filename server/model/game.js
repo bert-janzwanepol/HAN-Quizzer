@@ -53,7 +53,7 @@ gameSchema.methods.closeRound = async function (roundnumber) {
         teamsPoints.push({
             name: team.name,
             score: this.rounds[roundnumber - 1].questions.map(q => {
-                const answers = q.answers.find(a => a.teamName === team.name && a.correct)
+                const answers = q.answers.find(a => a.teamName === team.name)
                 return answers[0] ? answers.filter(a => a.teamName === team.name && a.correct).length : 0
             })[0]
         })

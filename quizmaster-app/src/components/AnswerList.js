@@ -11,7 +11,6 @@ class AnswerListUI extends Component {
                 <li key={answer.teamName}>
                     {answer.answer} - {answer.teamName}
 
-                    {/* accept button */}
                     <button className="icon-button accept" onClick={() => this.props.setAnswerStatus(true, answer.teamName, this.props.roomkey, this.props.roundNumber, this.props.questionNumber)}>
                         <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check">
                             <polyline fill="none" stroke="#000" strokeWidth="1.1" points="4,10 8,15 17,4"></polyline>
@@ -42,6 +41,7 @@ const mapStateToProps = (state) => {
         roomkey: state.game.game.password,
         roundNumber: state.game.roundNumber,
         questionNumber: state.game.questionNumber,
+        questionOpen: state.game.questionOpen,
     }
 }
 

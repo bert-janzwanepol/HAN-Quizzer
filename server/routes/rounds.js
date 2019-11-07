@@ -16,6 +16,12 @@ router.use('/:roundnumber/askedquestions', askedQuestionsRouter)
 
 router.use(roleAuthentication.roleAuthentication('quizmaster'))
 
+router.post('/', async (req, res) => {
+    await req.game.startNewRound()
+    res.sendStatus(200)
+})
+
+
 router.put('/:roundnumber/categories', async (req, res) => {
     const game = req.game
 
@@ -27,10 +33,6 @@ router.put('/:roundnumber/categories', async (req, res) => {
     res.sendStatus(200)
 })
 
-router.post('/', async (req, res) => {
-    await req.game.startNewRound()
-    res.sendStatus(200)
-})
 
 router.put('/:roundnumber/close', async (req, res) => {
     const game = req.game
