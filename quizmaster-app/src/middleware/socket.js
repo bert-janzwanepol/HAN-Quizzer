@@ -27,7 +27,6 @@ const socketMiddleware = () => {
                     case 'STARTROUND':
                         const questionNr = store.getState().game.roundNumber;
                         const pw = store.getState().game.game.password;
-                        console.log(pw, questionNr);
 
                         store.dispatch(fetchRoundQuestions(pw, questionNr));
                         break;

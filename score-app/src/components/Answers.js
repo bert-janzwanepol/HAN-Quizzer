@@ -10,7 +10,7 @@ class AnswersUI extends Component {
             <ul>
                 {this.props.answers.map(a => {
                     return (
-                        <li key={a.teamName}>{a.teamName}: {a.answer} - {a.correct ? 'Goed' : 'Fout'}</li>
+                        <li key={a.teamName}>{a.teamName}: {a.answer} - {a.correct === null ? 'Beroodelen...' : a.correct ? 'Goed' : 'Fout'}</li>
                     )
                 })}
             </ul>

@@ -43,7 +43,7 @@ export const setQuestionAction = (question) => {
     return { type: NEW_QUESTION, question }
 }
 
-export const closeQuestionAction = (answers) => {
+export const getAnswersAction = (answers) => {
     return { type: CLOSE_QUESTION, answers }
 }
 
@@ -129,13 +129,13 @@ export const getStandings = (roomkey) => {
     }
 }
 
-export const closeQuestion = (roomkey, roundNumber, questionNumber) => {
+export const getAnswers = (roomkey, roundNumber, questionNumber) => {
     return (dispatch) => {
         fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundNumber + '/askedquestions/' + questionNumber + '/answers', {
             headers: {
                 token: sessionStorage.getItem('token')
             }
         }).then(res => res.json())
-            .then(answers => dispatch(closeQuestionAction(answers)))
+            .then(answers => dispatch(getAnswersAction(answers)))
     }
 }

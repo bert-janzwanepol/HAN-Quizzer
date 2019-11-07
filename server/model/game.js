@@ -48,23 +48,27 @@ gameSchema.methods.startNewRound = async function () {
 
 gameSchema.methods.closeRound = async function (roundnumber) {
     const teamsPoints = []
+    const round = this.rounds[roundnumber - 1]
 
     this.teams.forEach(team => {
         teamsPoints.push({
             name: team.name,
-            score: this.rounds[roundnumber - 1].questions.map(q => {
-                const answers = q.answers.find(a => a.teamName === team.name)
-                return answers[0] ? answers.filter(a => a.teamName === team.name && a.correct).length : 0
-            })[0]
+            score: round.questions.map(q => {
+                const answer = q.answers.find(a => a.teamName === team.name)
+                return answer ? answer : { correct: false }
+            }).filter(answer => answer.correct).length
         })
     })
     teamsPoints.sort(sorter.sortTeams)
 
 
     teamsPoints.forEach((teamPoints, i) => {
-        this.teams.find(team => team.name === teamPoints.name).score += (teamPoints.score + 6 - i)
+        this.teams.forEach(team => {
+            if (team.name === teamPoints.name)
+                team.score += (teamPoints.score + 6 - i)
+        })
     })
-
+    this.markModified('teams')
     await this.save()
 }
 

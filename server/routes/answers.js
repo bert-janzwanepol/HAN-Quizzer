@@ -57,8 +57,8 @@ router.put('/', async (req, res) => {
     await game.save()
 
     req.app.get('wss').sendToTeam({ type: 'ANSWERJUDGED' }, game.password, req.body.teamname)
+    req.app.get('wss').broadcast({ type: 'ANSWERJUDGED' }, game.password, 'scoreboard')
     req.app.get('wss').broadcast({ type: 'NEWSTANDINGS' }, game.password, 'scoreboard')
-
 
     res.sendStatus(200)
 })

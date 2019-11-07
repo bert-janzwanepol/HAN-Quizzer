@@ -1,4 +1,4 @@
-import { getStandings, fetchTeams, getQuestion, closeQuestion, startRoundAction } from '../reducers/score';
+import { getStandings, fetchTeams, getQuestion, closeQuestion, startRoundAction, getAnswers } from '../reducers/score';
 
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 export const REDUX_WEBSOCKET_CLOSED = 'REDUX_WEBSOCKET::CLOSED';
@@ -32,10 +32,12 @@ const socketMiddleware = () => {
                         break;
 
                     case 'QUESTIONCLOSED':
+                    case 'ANSWERJUDGED':
                         const { roomkey } = store.getState().application
                         const { roundNumber, questionNumber } = store.getState().score
-                        store.dispatch(closeQuestion(roomkey, roundNumber, questionNumber));
+                        store.dispatch(getAnswers(roomkey, roundNumber, questionNumber));
                         break;
+
                     default:
                         break;
                 }
