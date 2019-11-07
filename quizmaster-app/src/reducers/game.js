@@ -142,7 +142,7 @@ export const gameReducer = produce((draft = initialState, action) => {
             break;
 
         case SET_QUESTION_NUMBER:
-            draft.questionNumber = 1;
+            draft.questionNumber = 0;
             break;
 
         case SET_SELECTED_CATEGORIES:

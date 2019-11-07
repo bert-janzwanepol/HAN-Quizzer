@@ -55,7 +55,7 @@ class QuestionDashboardUI extends Component {
                     </div>
 
                     {
-                        (this.props.questionNumber <= 1 || (this.props.questionNumber === 2 && this.props.questionOpen === true)) &&
+                        (this.props.questionNumber <= 12 || (this.props.questionNumber === 12 && this.props.questionOpen === true)) &&
                         <div className="button-group">
                             <button
                                 disabled={this.props.questionOpen || this.props.answers[0] !== undefined}
@@ -70,22 +70,17 @@ class QuestionDashboardUI extends Component {
                                 onClick={(e) => { this.props.closeQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questionNumber) }}
                             >
                                 Sluiten
-                                </button>
-                            <button
-                                disabled={!this.props.questionOpen && this.props.answers[0] === undefined}
-                                onClick={(e) => { this.props.nextQuestion(this.props.roomkey, this.props.roundNumber, this.props.questionNumber, e) }}
-                            >
-                                Volgende
-                                </button>
+                            </button>
                         </div>
                     }
 
                     {
-                        (this.props.questionNumber === 2 && this.props.questionOpen === false) &&
+                        (this.props.questionNumber === 12 && this.props.questionOpen === false) &&
                         <div className="button-group">
                             <button
                                 onClick={(e) => {
                                     this.props.resetCategories();
+                                    this.props.resetQuestionNumber();
                                     this.props.setRoundNumber((this.props.roundNumber + 1))
                                     this.props.history.push('/game');
                                 }}
