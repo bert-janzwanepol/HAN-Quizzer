@@ -9,6 +9,7 @@ class QuestionUI extends Component {
 
     render() {
         let message = this.props.gameStarted ? this.props.waitingForQuestionMsg : this.props.waitingForStartMsg;
+        let buttonText = this.props.submitted === true ? 'change answer' : 'submit answer';
 
         return (
 
@@ -23,7 +24,7 @@ class QuestionUI extends Component {
                             type="submit"
                             onClick={(e) => this.props.submitAnswer(e, this.props.roomkey, this.props.roundNumber, this.props.questionNumber, this.props.answer)}
                         >
-                            submit answer
+                            {buttonText}
                         </button>
                     </form>
                 </>
@@ -46,7 +47,8 @@ const mapStateToProps = (state) => {
         answer: state.game.answer,
         roomkey: state.application.roomkey,
         roundNumber: state.game.roundNumber,
-        questionNumber: state.game.questionNumber
+        questionNumber: state.game.questionNumber,
+        submitted: state.game.submitted
     }
 }
 
