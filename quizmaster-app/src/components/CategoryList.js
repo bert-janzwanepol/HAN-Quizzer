@@ -25,7 +25,7 @@ class CategoryListUI extends Component {
         })
 
         return (
-            <form onSubmit={(e) => {
+            <form className="category-list" onSubmit={(e) => {
                 this.props.setRoundCategories(this.props.roomkey, this.props.roundNumber, e, this.props.selectedCategories);
                 this.props.history.push('/game/round');
             }}>

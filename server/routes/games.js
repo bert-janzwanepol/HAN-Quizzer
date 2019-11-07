@@ -48,6 +48,8 @@ router.put('/:password/start', async (req, res) => {
 })
 
 router.put('/:password/close', (req, res) => {
+    const game = req.game;
+
     req.app.get('wss').broadcast({ type: 'CLOSEGAME' }, game.password, 'quizmaster', 'teams', 'scoreboard')
     res.sendStatus(200)
 })

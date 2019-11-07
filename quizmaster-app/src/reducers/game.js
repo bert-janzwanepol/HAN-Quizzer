@@ -21,6 +21,8 @@ export const SET_SELECTED_CATEGORIES = 'SET_SELECTED_CATEGORIES';
 export const NEW_ROUND = 'NEW_ROUND';
 export const ANSWERS_RECEIVED = 'ANSWERS_RECEIVED';
 
+export const GAME_STOPPED = 'GAME_STOPPED';
+
 export const FETCH_TEAMS = 'FETCH_TEAMS';
 export const SET_TEAM_STATUS = 'SET_TEAM_STATUS';
 
@@ -363,7 +365,7 @@ export const nextQuestion = (roomkey, roundnumber, questionNumber, event) => {
                 },
             })
             .then(() => {
-                dispatch(getAnswerAction([]))
+                dispatch(getAnswerAction({}))
                 dispatch(fetchRoundQuestions(roomkey, roundnumber))
             })
     }
@@ -381,9 +383,11 @@ export const getAnswers = (roomkey, roundNumber, questionNumber) => {
             .then(res => res.json())
             .then(json => dispatch(getAnswerAction(json)))
     }
+
 }
 
 export const approveAnswer = (correct, teamname, roomkey, roundNumber, questionNumber) => {
+
     return (dispatch) => {
         fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundNumber + '/askedquestions/' + questionNumber + '/answers',
             {
@@ -400,4 +404,22 @@ export const approveAnswer = (correct, teamname, roomkey, roundNumber, questionN
             })
             .then(() => dispatch(getAnswers(roomkey, roundNumber, questionNumber)))
     }
+
+}
+
+export const stopGame = (roomkey, event) => {
+    event.preventDefault();
+
+    return dispatch => {
+        fetch('http://localhost:3000/games/' + roomkey + '/close',
+            {
+                method: 'put',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                    token: sessionStorage.getItem('token')
+                }
+            })
+    }
+
 }

@@ -133,6 +133,7 @@ export const submitTeam = (name, roomkey, event) => {
                 name: name
             })
         })
+            .then(handleSubmitErrors)
             .then(res => res.json())
             .then(json => {
                 if (json.error) dispatch(rejectTeamAction(json.error))
@@ -145,5 +146,17 @@ export const submitTeam = (name, roomkey, event) => {
                     dispatch(connect('ws://localhost:3000'));
                 }
             })
+            .catch((error) => {
+                dispatch(setWaitStatusAction(false));
+                dispatch(rejectTeamAction(error.message));
+            })
     }
+}
+
+const handleSubmitErrors = (res) => {
+
+    if (res.status === 401) throw new Error('Room niet gevonden!');
+    if (res.status === 409) throw new Error('Er bestaat al een team met deze naam!');
+
+    return res;
 }

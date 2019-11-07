@@ -6,7 +6,7 @@ import { getAnswers, approveAnswer } from '../reducers/game'
 class AnswerListUI extends Component {
 
     render() {
-        const answerList = this.props.answers.map(answer => {
+        const answerList = this.props.answers[0] !== undefined && this.props.answers.map(answer => {
             return (
                 <li key={answer.teamName}>
                     {answer.answer} - {answer.teamName}

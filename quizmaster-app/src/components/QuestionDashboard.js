@@ -11,7 +11,8 @@ import {
     nextQuestion,
     resetSelectedCategoriesAction,
     resetQuestionNumberAction,
-    setRoundNumber
+    setRoundNumber,
+    stopGame
 } from '../reducers/game';
 import AnswerList from './AnswerList';
 
@@ -39,7 +40,7 @@ class QuestionDashboardUI extends Component {
                     <div>
                         {
 
-                            this.props.questions
+                            this.props.questions[0] !== undefined
                                 ?
                                 <form>
                                     {this.props.questions !== undefined && questionList}
@@ -55,10 +56,10 @@ class QuestionDashboardUI extends Component {
                     </div>
 
                     {
-                        (this.props.questionNumber <= 12 || (this.props.questionNumber === 12 && this.props.questionOpen === true)) &&
+                        (this.props.questionNumber <= 11 || (this.props.questionNumber === 12 && this.props.questionOpen === true)) &&
                         <div className="button-group">
                             <button
-                                disabled={this.props.questionOpen || this.props.answers[0] !== undefined}
+                                disabled={this.props.questions[0] === undefined || (this.props.questionOpen === true) || (this.props.answers[0] !== undefined && this.props.questionOpen === false)}
                                 onClick={(e) => {
                                     this.props.openQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questions[this.props.selectedQuestionIndex]._id);
                                 }}
@@ -71,6 +72,17 @@ class QuestionDashboardUI extends Component {
                             >
                                 Sluiten
                             </button>
+
+                            {/* The next question button renders when it's not round one and the round is closed */}
+                            {
+                                (this.props.questionNumber > 0 && this.props.questionOpen === false) &&
+                                <button
+                                    disabled={this.props.questionNumber === 0 && this.props.questionOpen === true && this.props.answers[0] !== undefined}
+                                    onClick={(e) => { this.props.nextQuestion(this.props.roomkey, this.props.roundNumber, this.props.questionNumber, e) }}
+                                >
+                                    Volgende
+                            </button>
+                            }
                         </div>
                     }
 
@@ -88,7 +100,7 @@ class QuestionDashboardUI extends Component {
                                 Doorgaan
                                 </button>
                             <button
-                                onClick={(e) => { this.props.closeQuestion(this.props.roomkey, this.props.roundNumber, e, this.props.questionNumber) }}
+                                onClick={(e) => { this.props.stopGame(this.props.roomkey, e) }}
                             >
                                 Stoppen
                                 </button>
@@ -103,7 +115,7 @@ class QuestionDashboardUI extends Component {
                         <AnswerList />
                     </div>
                 </main>
-            </div>
+            </div >
         )
     }
 }
@@ -132,7 +144,8 @@ const mapDispatchToProps = (dispatch) => {
         },
         resetCategories: () => dispatch(resetSelectedCategoriesAction()),
         resetQuestionNumber: () => dispatch(resetQuestionNumberAction()),
-        setRoundNumber: (number) => dispatch(setRoundNumber(number))
+        setRoundNumber: (number) => dispatch(setRoundNumber(number)),
+        stopGame: (roomkey, e) => dispatch(stopGame(roomkey, e))
     }
 }
 

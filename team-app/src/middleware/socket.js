@@ -34,6 +34,12 @@ const socketMiddleware = () => {
                     case 'STARTROUND':
                         store.dispatch(startNewRoundAction())
                         break;
+
+                    case 'CLOSEGAME':
+                        sessionStorage.clear()
+                        store.dispatch(setWaitStatusAction(false))
+                        window.location.href = '/';
+                        break;
                     default:
                         break;
                 }

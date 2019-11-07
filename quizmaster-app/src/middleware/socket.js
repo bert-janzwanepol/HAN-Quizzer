@@ -30,6 +30,10 @@ const socketMiddleware = () => {
 
                         store.dispatch(fetchRoundQuestions(pw, questionNr));
                         break;
+                    case 'CLOSEGAME':
+                        sessionStorage.clear()
+                        window.location.href = '/';
+                        break;
                     default:
                         break;
                 }
