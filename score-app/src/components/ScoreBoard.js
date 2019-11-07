@@ -10,7 +10,7 @@ class ScoreboardUI extends Component {
 
     render() {
         let content = this.props.closed ?
-            <h1>Winner is {winner.teamname}</h1>
+            <h1>Winner is {this.props.winner.teamname}</h1>
             :
             <div>
                 <h1>Room key: {this.props.roomkey}</h1>
