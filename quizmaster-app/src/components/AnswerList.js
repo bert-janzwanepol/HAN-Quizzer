@@ -11,18 +11,29 @@ class AnswerListUI extends Component {
                 <li key={answer.teamName}>
                     {answer.answer} - {answer.teamName}
 
-                    <button className="icon-button accept" onClick={() => this.props.setAnswerStatus(true, answer.teamName, this.props.roomkey, this.props.roundNumber, this.props.questionNumber)}>
-                        <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check">
-                            <polyline fill="none" stroke="#000" strokeWidth="1.1" points="4,10 8,15 17,4"></polyline>
-                        </svg>
-                    </button>
+                    {/* repeat conditional render so we don't need a wrapping jsx element */}
+                    {
+                        // accept button
+                        !this.props.questionOpen &&
 
-                    {/* reject button */}
-                    <button className="icon-button reject" onClick={() => this.props.setAnswerStatus(false, answer.teamName, this.props.roomkey, this.props.roundNumber, this.props.questionNumber)}>
-                        <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="close"><path fill="none" stroke="#000" strokeWidth="1.06" d="M16,16 L4,4">
-                        </path><path fill="none" stroke="#000" strokeWidth="1.06" d="M16,4 L4,16"></path>
-                        </svg>
-                    </button>
+                        <button
+                            className={(answer.correct ? 'active' : 'inactive') + " icon-button accept"}
+                            onClick={() => this.props.setAnswerStatus(true, answer.teamName, this.props.roomkey, this.props.roundNumber, this.props.questionNumber)}
+                        >
+                            <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check">
+                                <polyline fill="none" stroke="#000" strokeWidth="1.1" points="4,10 8,15 17,4"></polyline>
+                            </svg>
+                        </button>
+                    }
+                    {
+                        // reject button
+                        !this.props.questionOpen &&
+                        <button className={(!answer.correct ? 'active' : 'inactive') + " icon-button reject"} onClick={() => this.props.setAnswerStatus(false, answer.teamName, this.props.roomkey, this.props.roundNumber, this.props.questionNumber)}>
+                            <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="close"><path fill="none" stroke="#000" strokeWidth="1.06" d="M16,16 L4,4">
+                            </path><path fill="none" stroke="#000" strokeWidth="1.06" d="M16,4 L4,16"></path>
+                            </svg>
+                        </button>
+                    }
                 </li>
             )
         });
