@@ -1,6 +1,7 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
+const sorter = require('../utils/sorter')
 const roleAuthentication = require('../middleware/roleAuthentication')
 
 const router = express.Router()
@@ -34,13 +35,14 @@ router.get('/standings', (req, res) => {
     game.teams.forEach(team => {
         const teamStats = {
             teamname: team.name,
-            totalRoundPoints: team.score,
+            score: team.score,
             answersCorrect: game.rounds.map(round =>
                 round.questions.map(q => q.answers.find(a => a.teamName === team.name && a.correct === true)).length
             )
         }
         standing.push(teamStats)
     })
+    standing.sort(sorter)
     res.json(standing)
 })
 

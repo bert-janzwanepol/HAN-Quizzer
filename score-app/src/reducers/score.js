@@ -8,7 +8,8 @@ const initialState = {
     questionClosed: false,
     answer: '',
     teams: [],
-    standings: []
+    standings: [],
+    answers: []
 }
 
 export const TEAMS_RECEIVED = 'TEAMS_RECEIVED';
@@ -35,8 +36,8 @@ export const setQuestionAction = (question) => {
     return { type: NEW_QUESTION, question }
 }
 
-export const closeQuestionAction = () => {
-    return { type: CLOSE_QUESTION }
+export const closeQuestionAction = (answers) => {
+    return { type: CLOSE_QUESTION, answers }
 }
 
 export const openQuestion = () => {
@@ -60,6 +61,8 @@ export const scoreReducer = produce((draft = initialState, action) => {
             return draft
 
         case CLOSE_QUESTION:
+            console.log(action.answers)
+            draft.answers = action.answers
             draft.questionClosed = true
             return draft
 
@@ -115,13 +118,13 @@ export const getStandings = (roomkey) => {
     }
 }
 
-export const closeQuestion = () => {
-    // return (dispatch) => {
-    //     fetch('http://localhost:3000/games/' + roomkey + '/teams/standings', {
-    //         headers: {
-    //             token: sessionStorage.getItem('token')
-    //         }
-    //     }).then(res => res.json())
-    //         .then(standings => dispatch(setStandingsAction(standings)))
-    // }
+export const closeQuestion = (roomkey, roundNumber, questionNumber) => {
+    return (dispatch) => {
+        fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundNumber + '/askedquestions/' + questionNumber + '/answers', {
+            headers: {
+                token: sessionStorage.getItem('token')
+            }
+        }).then(res => res.json())
+            .then(answers => dispatch(closeQuestion(answers)))
+    }
 }
