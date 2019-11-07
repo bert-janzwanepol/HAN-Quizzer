@@ -1,5 +1,5 @@
 import produce from "immer";
-// import { connect } from '@giantmachines/redux-websocket';
+import { rejectTeamAction } from './application';
 
 import { SET_INPUT_FIELD } from './application';
 export const GAME_STARTED = 'GAME_STARTED';
@@ -48,7 +48,7 @@ const initialState = {
     waitingForStartMsg: 'Waiting for the game to start',
     roundNumber: 0,
     questionNumber: 0,
-    submitted: false
+    submitted: false,
 }
 
 export const gameReducer = produce((draft = initialState, action) => {
@@ -100,7 +100,15 @@ export const getQuestion = (questionId) => {
 export const submitAnswer = (event, roomkey, roundNumber, questionNumber, answer) => {
     event.preventDefault();
 
+
     return (dispatch) => {
+        if (!answer) {
+            const error = 'Antwoord mag niet leeg zijn!'
+            dispatch(rejectTeamAction(error));
+
+            return;
+        }
+
         fetch('http://localhost:3000/games/' + roomkey + '/rounds/' + roundNumber + '/askedquestions/' + questionNumber + '/answers',
             {
                 method: 'post',

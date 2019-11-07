@@ -20,6 +20,7 @@ class QuestionUI extends Component {
                     <p>{this.props.question.category}</p>
                     <form>
                         <input value={this.props.answer} onChange={e => this.props.setAnswer(e.target.value)} type="text" name="answer" required />
+                        {this.props.errorMessage && <small className='form-error-message'>{this.props.errorMessage}</small>}
                         <button
                             type="submit"
                             onClick={(e) => this.props.submitAnswer(e, this.props.roomkey, this.props.roundNumber, this.props.questionNumber, this.props.answer)}
@@ -48,7 +49,8 @@ const mapStateToProps = (state) => {
         roomkey: state.application.roomkey,
         roundNumber: state.game.roundNumber,
         questionNumber: state.game.questionNumber,
-        submitted: state.game.submitted
+        submitted: state.game.submitted,
+        errorMessage: state.application.errorMessage,
     }
 }
 
