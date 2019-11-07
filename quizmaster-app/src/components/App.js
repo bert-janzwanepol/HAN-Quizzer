@@ -7,7 +7,7 @@ import {
 
 import '../App.css';
 import SignupForm from './Signup';
-import TitleMessage from './TitleMessage';
+import Logo from './Logo';
 import GameDashboard from './GameDashboard';
 import QuestionDashboard from './QuestionDashboard'
 
@@ -18,7 +18,7 @@ function App() {
                 <Switch>
                     <Route exact path="/" render={routeProps => {
                         return <div className="login">
-                            <TitleMessage title="Quizzer, admin login" />
+                            <Logo />
                             <SignupForm {...routeProps} />
                         </div>
                     }} />

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import Logo from './Logo';
 import { setRoomPasswordAction, login } from '../reducers/application';
 
 class SignupFormUI extends Component {
@@ -11,6 +12,7 @@ class SignupFormUI extends Component {
             !this.props.authenticated
                 ?
                 <div className="scoreboard-signup">
+                    <Logo />
                     <h1>Scoreboard login:</h1>
                     <form>
                         <label htmlFor="roomKey">Roomkey</label>

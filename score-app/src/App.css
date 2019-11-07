@@ -15,8 +15,6 @@ html {
     height: 100vh;
     justify-content: center;
     width: 100vw;
-
-    margin-right: 1em;
 }
 
 header {
@@ -34,6 +32,10 @@ input, button {
     font-size: 1.1rem;
     margin-top: 1rem;
     padding: 0.2rem;
+}
+
+img {
+  width: 8rem;
 }
 
 button {

@@ -4,8 +4,12 @@
 
 html {
     color: #fff;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
+}
+
+html, body {
+  margin: 0;
 }
 
 .app {
@@ -15,6 +19,11 @@ html {
   padding: 0.75rem;
   width: 100vw;
   box-sizing: border-box;
+}
+
+img {
+  width: 8em;
+  margin-bottom: 2rem;
 }
 
 .login {
@@ -36,6 +45,7 @@ html {
 }
 
 .login form button {
+  padding: 0.5rem 0.5rem;
   width: 100%;
 }
 

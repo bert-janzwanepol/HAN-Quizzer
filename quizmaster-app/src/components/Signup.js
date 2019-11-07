@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import Logo from './Logo'
 
 import { approveQuizmasterAction, rejectQuizmasterAction, setKeyAction, quizmasterLogin } from '../reducers/authentication'
 

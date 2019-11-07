@@ -1,8 +1,9 @@
 import React from 'react';
+import logo from '../logo.png';
 
 const Logo = () => {
     return (
-        <h1>QUIZZER</h1>
+        <img src={logo} alt="logo" />
     )
 }
 
