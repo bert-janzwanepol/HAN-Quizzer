@@ -65,7 +65,7 @@ gameSchema.methods.closeRound = async function (roundnumber) {
     teamsPoints.forEach((teamPoints, i) => {
         this.teams.forEach(team => {
             if (team.name === teamPoints.name)
-                team.score += (teamPoints.score + 6 - i)
+                team.score += (teamPoints.score + this.teams.length - i)
         })
     })
     this.markModified('teams')
