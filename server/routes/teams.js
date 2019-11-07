@@ -10,7 +10,7 @@ const Game = mongoose.model('Game')
 router.post('/', (req, res) => {
     const game = req.game
 
-    if (game.rounds.length) {
+    if (game.rounds.length || game.teams.find(t => t.name === req.body.name)) {
         res.status(409).send()
     } else {
         const token = jwt.sign({
@@ -36,8 +36,10 @@ router.get('/standings', (req, res) => {
         const teamStats = {
             teamname: team.name,
             score: team.score,
-            answersCorrect: game.rounds.map(round =>
-                round.questions.map(q => q.answers.find(a => a.teamName === team.name && a.correct === true)).length
+            answersCorrect: game.rounds.map(round => {
+                const answers = round.questions.map(q => q.answers.find(a => a.teamName === team.name && a.correct))
+                return answers[0] ? answers.filter(a => a.teamName === team.name && a.correct).length : 0
+            }
             )
         }
         standing.push(teamStats)

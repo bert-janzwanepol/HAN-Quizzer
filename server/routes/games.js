@@ -25,7 +25,7 @@ router.use('/:password/rounds', roundsRouter)
 
 router.use(roleAuthentication.roleAuthentication('quizmaster'))
 
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
     const gamebody = {
         quizmaster: req.user.name,
         rounds: [],
@@ -34,15 +34,15 @@ router.post('/', (req, res, next) => {
     }
 
     const game = new Game(gamebody)
-    game.createNewGame()
+    await game.createNewGame()
 
     res.json(gamebody)
 })
 
-router.put('/:password/start', (req, res) => {
+router.put('/:password/start', async (req, res) => {
     const game = req.game
 
-    game.start()
+    await game.start()
     req.app.get('wss').broadcast({ type: 'STARTGAME' }, game.password, 'quizmaster', 'teams', 'scoreboard')
     res.sendStatus(200)
 })

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
-import { fetchTeams } from '../reducers/score'
+import { getStandings } from '../reducers/score'
 
 class TeamListUI extends Component {
 
     componentDidMount() {
-        this.props.getTeams(this.props.roomkey)
+        this.props.getStandings(this.props.roomkey)
     }
 
     render() {
@@ -14,12 +14,12 @@ class TeamListUI extends Component {
         if (this.props.standings.length > 0) {
             tableRows = this.props.standings.map((team, i) => {
                 return (
-                    <tr key={team.name + '-standing'}>
+                    <tr className={[0, 1, 2].includes(i) ? 'team-' + i : ''} key={team.teamname + '-standing'}>
                         <td>{'#' + (i + 1)}</td>
-                        <td key={team.name}>
+                        <td key={team.teamname}>
                             {team.teamname}
                         </td>
-                        {team.answersCorrect.map(a => <td key={team.name + '-standing'}> {a}/12 </td>)}
+                        {team.answersCorrect.map(a => <td key={team.teamname + '-standing'}> {a}/12 </td>)}
                         <td key={team.score}>
                             {team.score}
                         </td>
@@ -27,9 +27,10 @@ class TeamListUI extends Component {
                 )
             })
         } else if (this.props.teams) {
-            tableRows = this.props.teams.filter(team => team.approved === true).map((team) => {
+            tableRows = this.props.teams.filter(team => team.approved === true).map((team, i) => {
                 return (
                     <tr key={team.name}>
+                        <td>{'#' + (i + 1)}</td>
                         <td key={team.name}>
                             {team.name}
                         </td>
@@ -72,7 +73,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getTeams: (roomkey) => dispatch(fetchTeams(roomkey))
+        getStandings: (roomkey) => dispatch(getStandings(roomkey))
     }
 }
 

@@ -35,6 +35,11 @@ const socketMiddleware = () => {
                         break;
                 }
                 break;
+
+            case REDUX_WEBSOCKET_CLOSED:
+                sessionStorage.clear()
+                window.location.href = '/';
+                break
             default:
                 return next(action);
         }

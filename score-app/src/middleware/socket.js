@@ -11,14 +11,14 @@ const socketMiddleware = () => {
                 console.log(message);
                 switch (message) {
                     case 'TEAMCHANGE':
-                        store.dispatch(fetchTeams(store.getState().application.roomkey))
+                        store.dispatch(getStandings(store.getState().application.roomkey))
                         break;
 
                     case 'STARTROUND':
                         store.dispatch(startRoundAction())
+                        store.dispatch(getStandings(store.getState().application.roomkey))
                         break;
 
-                    case 'STARTGAME':
                     case 'NEWSTANDINGS':
                     case 'ROUNDCLOSED':
                         store.dispatch(getStandings(store.getState().application.roomkey))

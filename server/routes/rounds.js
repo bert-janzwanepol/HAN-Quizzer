@@ -27,8 +27,8 @@ router.put('/:roundnumber/categories', async (req, res) => {
     res.sendStatus(200)
 })
 
-router.post('/', (req, res) => {
-    req.game.startNewRound()
+router.post('/', async (req, res) => {
+    await req.game.startNewRound()
     res.sendStatus(200)
 })
 

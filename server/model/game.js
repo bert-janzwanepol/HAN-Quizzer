@@ -32,7 +32,7 @@ gameSchema.methods.addTeam = async function (teamname) {
 
 gameSchema.methods.start = async function () {
     this.teams = this.teams.filter(t => t.approved)
-    this.save()
+    await this.save()
 }
 
 gameSchema.methods.startNewRound = async function () {
@@ -43,7 +43,7 @@ gameSchema.methods.startNewRound = async function () {
         categories: []
     })
     this.rounds.push(round)
-    this.save()
+    await this.save()
 }
 
 gameSchema.methods.closeRound = async function (roundnumber) {
@@ -52,17 +52,20 @@ gameSchema.methods.closeRound = async function (roundnumber) {
     this.teams.forEach(team => {
         teamsPoints.push({
             name: team.name,
-            score: this.rounds[req.roundnumber - 1].questions.map(q => q.answers.find(a => a.teamName === team.name && a.correct === true)).length
+            score: this.rounds[roundnumber - 1].questions.map(q => {
+                const answers = q.answers.find(a => a.teamName === team.name && a.correct)
+                return answers[0] ? answers.filter(a => a.teamName === team.name && a.correct).length : 0
+            })[0]
         })
     })
     teamsPoints.sort(sorter.sortTeams)
 
 
-    this.teamsPoints.forEach((teamPoints, i) => {
-        this.teams.find(team => team.name === teamsPoints.name).score += (teamPoints.score + 6 - i)
+    teamsPoints.forEach((teamPoints, i) => {
+        this.teams.find(team => team.name === teamPoints.name).score += (teamPoints.score + 6 - i)
     })
 
-    this.save()
+    await this.save()
 }
 
 const Game = mongoose.model('Game', gameSchema)

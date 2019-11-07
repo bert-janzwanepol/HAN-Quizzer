@@ -32,11 +32,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-    }
-}
-
-const Scoreboard = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ScoreboardUI);
+const Scoreboard = ReactRedux.connect(mapStateToProps)(ScoreboardUI);
 
 export default Scoreboard;

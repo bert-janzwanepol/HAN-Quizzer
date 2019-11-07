@@ -122,3 +122,13 @@ button {
     flex-direction: column;
     align-items: center;
   }
+
+  .team-0 {
+    background-color:goldenrod;
+  }
+  .team-1 {
+    background-color: silver;
+  }
+  .team-2 {
+    background-color: #cd7f32;
+  }
