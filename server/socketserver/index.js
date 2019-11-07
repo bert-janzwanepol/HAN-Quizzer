@@ -96,7 +96,9 @@ function handleInitMessage(message, socket) {
             games.find(game => game.password === data.password).teams.push(socket)
             break
         case 'scoreboard':
-            games.find(game => game.password === data.password).scoreboard = socket
+            games.find(game => game.password === data.password) ?
+                games.find(game => game.password === data.password).scoreboard = socket :
+                null
             break
         default:
             break
