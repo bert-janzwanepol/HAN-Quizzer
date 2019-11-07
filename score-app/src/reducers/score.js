@@ -83,6 +83,7 @@ export const scoreReducer = produce((draft = initialState, action) => {
 
         case NEW_ROUND:
             draft.roundNumber++
+            draft.questionNumber = 0
             return draft
 
         case NEW_STANDINGS:
