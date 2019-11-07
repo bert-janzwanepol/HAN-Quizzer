@@ -24,7 +24,7 @@ class QuestionDashboardUI extends Component {
             let checked = index === this.props.selectedQuestionIndex ? 'checked' : false;
 
             return (
-                <div key={question._id}>
+                <div key={question._id} className="question-list-item">
                     <input type="radio" value={question._id} id={question._id} name={question._id} onChange={() => { this.props.selectQuestion(index, (!this.props.questionOpen && this.props.questionNumber !== 13)) }} checked={checked} />
                     <label htmlFor={question._id}>
                         {question.question} ({question.category})

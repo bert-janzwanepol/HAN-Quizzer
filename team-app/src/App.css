@@ -9,7 +9,7 @@ html {
 }
 
 .app {
-    background-color: rgb(45, 45, 45);
+    background-color: #1d1d1d;
     display: flex;
     flex-direction: column;
     height: 44rem;
@@ -30,19 +30,25 @@ form {
     justify-content: center;
 }
 
+label {
+  margin: 0.5rem 0;
+}
+
 input, button {
     font-size: 1.1rem;
-    margin-top: 1rem;
+    margin-top: 0.25rem;
     padding: 0.2rem;
 }
 
 button {
-    align-self: center;
-    border: none;
-    border-radius: 50px;
-    background-color: rgb(1, 144, 245);
-    color: inherit;
-    width: 16rem;
+  align-self: center;
+  border: none;
+  color: white;
+  background-color: #df001c;
+  font-size: 20px;
+  padding: 0.5rem 2rem;
+  margin-top: 1rem;
+  width: 16rem;
 }
 
 .form-error-message {
