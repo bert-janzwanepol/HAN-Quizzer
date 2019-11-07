@@ -37,8 +37,10 @@ router.get('/standings', (req, res) => {
             teamname: team.name,
             score: team.score,
             answersCorrect: game.rounds.map(round => {
-                const answers = round.questions.map(q => q.answers.find(a => a.teamName === team.name && a.correct))
-                return answers[0] ? answers.filter(a => a.teamName === team.name && a.correct).length : 0
+                return round.questions.map(q => {
+                    const answer = q.answers.find(a => a.teamName === team.name)
+                    return answer ? answer : { correct: false }
+                }).filter(answer => answer.correct).length
             }
             )
         }
