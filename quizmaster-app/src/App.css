@@ -38,6 +38,10 @@ img {
   color: white;
 }
 
+.login h1 {
+  text-align: center;
+}
+
 .login form {
   display: flex;
   flex-direction: column;

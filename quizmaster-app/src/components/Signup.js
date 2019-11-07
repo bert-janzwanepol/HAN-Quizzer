@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as ReactRedux from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import Logo from './Logo'
 
 import { approveQuizmasterAction, rejectQuizmasterAction, setKeyAction, quizmasterLogin } from '../reducers/authentication'
 
@@ -13,6 +12,7 @@ class SignupFormUI extends Component {
                 <Redirect to='/game' />
                 :
                 <form>
+                    <h1>Scoreboard login:</h1>
                     <label htmlFor="roomKey">Quizmaster naam:</label>
                     <input value={this.props.quizmasterKey} onChange={e => this.props.setKey(e.target.value)} type="text" name="quizmasterKey" id="quizmasterKey" required />
                     {this.props.errorMessage && <small className='form-error-message'>{this.props.errorMessage}</small>}
