@@ -1,7 +1,7 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
-const sorter = require('../utils/sorter')
+const sorter = require('../utils/sorter.js')
 const roleAuthentication = require('../middleware/roleAuthentication')
 
 const router = express.Router()
@@ -42,7 +42,7 @@ router.get('/standings', (req, res) => {
         }
         standing.push(teamStats)
     })
-    standing.sort(sorter)
+    standing.sort(sorter.sortTeams)
     res.json(standing)
 })
 

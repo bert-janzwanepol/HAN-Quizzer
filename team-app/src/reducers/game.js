@@ -59,7 +59,6 @@ export const gameReducer = produce((draft = initialState, action) => {
 
         case GAME_STARTED:
             draft.gameStarted = true;
-            draft.roundNumber++;
             break;
 
         case NEW_QUESTION:

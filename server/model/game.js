@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const teamSchema = require('./team')
 const roundSchema = require('./round')
-const sorter = require('../utils/sorter')
+const sorter = require('../utils/sorter.js')
 
 const Round = mongoose.model('Round')
 const Team = mongoose.model('Team')
@@ -55,7 +55,8 @@ gameSchema.methods.closeRound = async function (roundnumber) {
             score: this.rounds[req.roundnumber - 1].questions.map(q => q.answers.find(a => a.teamName === team.name && a.correct === true)).length
         })
     })
-    teamsPoints.sort(sorter)
+    teamsPoints.sort(sorter.sortTeams)
+
 
     this.teamsPoints.forEach((teamPoints, i) => {
         this.teams.find(team => team.name === teamsPoints.name).score += (teamPoints.score + 6 - i)

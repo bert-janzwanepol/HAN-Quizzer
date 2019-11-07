@@ -1,4 +1,4 @@
-exports = function sortTeams(a, b) {
+exports.sortTeams = (a, b) => {
     if (a.score < b.score) {
         return -1;
     }

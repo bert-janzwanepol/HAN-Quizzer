@@ -17,11 +17,18 @@ export const NEW_QUESTION = 'NEW_QUESTION';
 export const CLOSE_QUESTION = 'CLOSE_QUESTION';
 export const OPEN_QUESTION = 'OPEN_QUESTION';
 export const NEW_STANDINGS = 'NEW_STANDINGS';
+export const NEW_ROUND = 'NEW_ROUND'
 
 export const setTeamsAction = (json) => {
     return {
         type: TEAMS_RECEIVED,
         json
+    }
+}
+
+export const startRoundAction = () => {
+    return {
+        type: NEW_ROUND
     }
 }
 
@@ -64,6 +71,10 @@ export const scoreReducer = produce((draft = initialState, action) => {
             console.log(action.answers)
             draft.answers = action.answers
             draft.questionClosed = true
+            return draft
+
+        case NEW_ROUND:
+            draft.roundNumber++
             return draft
 
         case NEW_STANDINGS:
@@ -125,6 +136,6 @@ export const closeQuestion = (roomkey, roundNumber, questionNumber) => {
                 token: sessionStorage.getItem('token')
             }
         }).then(res => res.json())
-            .then(answers => dispatch(closeQuestion(answers)))
+            .then(answers => dispatch(closeQuestionAction(answers)))
     }
 }

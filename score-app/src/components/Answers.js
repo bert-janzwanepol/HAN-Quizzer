@@ -8,15 +8,11 @@ class AnswersUI extends Component {
     render() {
         return (
             <ul>
-                <li>
-                    Antwoord 1
-                </li>
-                <li>
-                    Antwoord 2
-                </li>
-                <li>
-                    Antwoord 3
-                </li>
+                {this.props.answers.map(a => {
+                    return (
+                        <li key={a.teamName}>{a.teamName}: {a.answer} - {a.correct ? 'Goed' : 'Fout'}</li>
+                    )
+                })}
             </ul>
         )
     }
