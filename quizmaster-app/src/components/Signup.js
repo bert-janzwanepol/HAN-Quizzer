@@ -12,7 +12,7 @@ class SignupFormUI extends Component {
                 <Redirect to='/game' />
                 :
                 <form>
-                    <h1>Scoreboard login:</h1>
+                    <h1>Quizmaster login:</h1>
                     <label htmlFor="roomKey">Quizmaster naam:</label>
                     <input value={this.props.quizmasterKey} onChange={e => this.props.setKey(e.target.value)} type="text" name="quizmasterKey" id="quizmasterKey" required />
                     {this.props.errorMessage && <small className='form-error-message'>{this.props.errorMessage}</small>}
