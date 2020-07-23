@@ -1,4 +1,4 @@
-import { getStandings, fetchTeams, getQuestion, closeQuestion, startRoundAction, getAnswers, closeGameAction } from '../reducers/score';
+import { closeGameAction, getAnswers, getQuestion, getStandings, startRoundAction } from '../reducers/score';
 
 export const REDUX_WEBSOCKET_MESSAGE = 'REDUX_WEBSOCKET::MESSAGE';
 export const REDUX_WEBSOCKET_CLOSED = 'REDUX_WEBSOCKET::CLOSED';
