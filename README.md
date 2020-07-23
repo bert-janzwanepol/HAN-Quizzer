@@ -2,11 +2,11 @@
 
 Realtime pubquiz app using Mongo, Express, React JS, Node Js, Redux, JWT and WebSockets.
 
-This application was made as an assignment for the HAN University of Applied Sciences in Arnhem in 2019.
+This application was made as an [assignment](https://github.com/bert-janzwanepol/HAN-Quizzer/blob/master/The%20Quizzer%20-%20Final%20assignment%20DWA%20course.pdf) for the HAN University of Applied Sciences in Arnhem in 2019.
 
 # Features
 
-For the full set of requirements see the 
+For the full set of requirements check out the [assignment](https://github.com/bert-janzwanepol/HAN-Quizzer/blob/master/The%20Quizzer%20-%20Final%20assignment%20DWA%20course.pdf).
 
 This repo features 3 SPA's:
 
